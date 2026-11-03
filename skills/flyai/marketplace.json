@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "flyai",
+    "displayName": {
+      "zh": "飞猪旅行",
+      "en": "FlyAI Travel"
+    },
+    "version": "1.0.15",
+    "usageExample": "帮我查一下下周五从上海到三亚的机票，再推荐几家亲子酒店，并对比价格。",
+    "description": {
+      "zh": "基于飞猪官方 FlyAI 命令行工具，用自然语言搜索机票、火车票、酒店、景点门票、演出赛事等出行产品，并给出可点击的预订链接。可免 Key 试用；预订由用户在飞猪页面自行确认。",
+      "en": "Search flights, trains, hotels, attraction tickets and live events in natural language through Fliggy's official FlyAI CLI, with booking links. Works without an API key; the user confirms any booking on Fliggy."
+    }
+  },
+  "storage": {
+    "packageKey": "skills/flyai/flyai_1.0.15.zip"
+  },
+  "media": {
+    "icon": {
+      "path": "assets/icon.svg",
+      "sourceKey": "skills/icons/flyai.svg"
+    },
+    "examples": []
+  }
+}
