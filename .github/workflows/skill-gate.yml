@@ -31,3 +31,9 @@ jobs:
 
       - name: Validate skill tree
         run: ruby scripts/validate_skills.rb
+
+      - name: Run catalog regression test
+        run: ruby scripts/validate_catalog.rb --self-test
+
+      - name: Validate expert and MCP catalogs
+        run: ruby scripts/validate_catalog.rb

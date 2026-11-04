@@ -1,0 +1,228 @@
+{
+  "items": [
+    {
+      "id": "amap",
+      "name": "高德地图",
+      "category": "life",
+      "kinds": [
+        "mcp",
+        "skill"
+      ],
+      "description": "地理编码、路线规划、周边搜索、天气查询",
+      "docsUrl": "https://developer.amap.com/api/mcp-server/summary",
+      "preset": {
+        "transport": "http",
+        "httpUrl": "https://mcp.amap.com/mcp?key=YOUR_AMAP_KEY"
+      }
+    },
+    {
+      "id": "baidu-map",
+      "name": "百度地图",
+      "category": "life",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "地点检索、路线规划、地理编码等地图能力",
+      "docsUrl": "https://lbs.baidu.com/docs/ai?title=mcpserver%2Fbase"
+    },
+    {
+      "id": "tencent-map",
+      "name": "腾讯地图",
+      "category": "life",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "位置服务 MCP Server",
+      "docsUrl": "https://lbs.qq.com/service/MCPServer/MCPServerGuide/overview"
+    },
+    {
+      "id": "didi",
+      "name": "滴滴",
+      "category": "life",
+      "kinds": [
+        "mcp",
+        "skill"
+      ],
+      "description": "打车叫车（付款需人工确认）",
+      "docsUrl": "https://mcp.didichuxing.com/"
+    },
+    {
+      "id": "meituan",
+      "name": "美团",
+      "category": "life",
+      "kinds": [
+        "mcp",
+        "skill"
+      ],
+      "description": "外卖、到店等本地生活服务",
+      "docsUrl": "https://developer.meituan.com/ai-hub/mcp-list"
+    },
+    {
+      "id": "mcd",
+      "name": "麦当劳中国",
+      "category": "life",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "点餐、优惠券等麦当劳服务",
+      "docsUrl": "https://open.mcd.cn/mcp/doc"
+    },
+    {
+      "id": "luckin",
+      "name": "瑞幸",
+      "category": "life",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "咖啡点单",
+      "docsUrl": "https://open.lkcoffee.com/docs"
+    },
+    {
+      "id": "ly-tmc",
+      "name": "同程商旅",
+      "category": "life",
+      "kinds": [
+        "mcp",
+        "skill"
+      ],
+      "description": "差旅机票、酒店、火车票预订",
+      "docsUrl": "https://tmc.ly.com/zh/resources/updates/open-mcp-skills-cli"
+    },
+    {
+      "id": "feishu",
+      "name": "飞书",
+      "category": "office",
+      "kinds": [
+        "mcp",
+        "cli",
+        "skill"
+      ],
+      "description": "消息、文档、日历、多维表格等飞书能力",
+      "docsUrl": "https://github.com/larksuite/cli"
+    },
+    {
+      "id": "dingtalk",
+      "name": "钉钉",
+      "category": "office",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "钉钉服务端 API MCP",
+      "docsUrl": "https://open.dingtalk.com/document/ai-dev/dingtalk-server-api-mcp-overview"
+    },
+    {
+      "id": "wecom",
+      "name": "企业微信",
+      "category": "office",
+      "kinds": [
+        "mcp",
+        "cli",
+        "skill"
+      ],
+      "description": "企业微信消息、通讯录、文档等",
+      "docsUrl": "https://work.weixin.qq.com/nl/index/aicli"
+    },
+    {
+      "id": "tencent-docs",
+      "name": "腾讯文档",
+      "category": "office",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "在线文档、表格的读写",
+      "docsUrl": "https://docs.qq.com/open/document/mcp/"
+    },
+    {
+      "id": "tencent-meeting",
+      "name": "腾讯会议",
+      "category": "office",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "预约、查询会议",
+      "docsUrl": "https://cloud.tencent.com/document/product/1095/133826"
+    },
+    {
+      "id": "biji",
+      "name": "Get 笔记",
+      "category": "notes",
+      "kinds": [
+        "mcp",
+        "skill"
+      ],
+      "description": "笔记记录与检索",
+      "docsUrl": "https://www.biji.com/skill"
+    },
+    {
+      "id": "flomo",
+      "name": "flomo",
+      "category": "notes",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "浮墨笔记快速记录与回顾",
+      "docsUrl": "https://help.flomoapp.com/advance/mcp"
+    },
+    {
+      "id": "zhihu",
+      "name": "知乎",
+      "category": "data",
+      "kinds": [
+        "mcp",
+        "skill"
+      ],
+      "description": "知乎数据开放平台：专业内容搜索与问答",
+      "docsUrl": "https://developer.zhihu.com/docs?key=zhihu_cli"
+    },
+    {
+      "id": "bocha",
+      "name": "博查搜索",
+      "category": "data",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "面向 AI 的中文网页搜索",
+      "docsUrl": "https://github.com/BochaAI/bocha-search-mcp"
+    },
+    {
+      "id": "qcc",
+      "name": "企查查",
+      "category": "data",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "企业工商信息查询",
+      "docsUrl": "https://agent.qcc.com/guide"
+    },
+    {
+      "id": "tianyancha",
+      "name": "天眼查",
+      "category": "data",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "企业工商信息查询",
+      "docsUrl": "https://github.com/tyc-tech/tyc-cli"
+    },
+    {
+      "id": "douyin",
+      "name": "抖音开放平台",
+      "category": "data",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "抖音开放能力 MCP 服务",
+      "docsUrl": "https://developer.open-douyin.com/docs/resource/zh-CN/dop/ability/mcp-service/mcp-service-desc"
+    },
+    {
+      "id": "oceanengine",
+      "name": "巨量引擎",
+      "category": "data",
+      "kinds": [
+        "mcp"
+      ],
+      "description": "广告投放与数据 MCP",
+      "docsUrl": "https://open.oceanengine.com/mcp"
+    }
+  ]
+}

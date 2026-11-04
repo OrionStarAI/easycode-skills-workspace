@@ -76,3 +76,11 @@ ruby scripts/sync_upstreams.rb
 ```
 
 `scripts/sync_upstreams.rb` 只会修改当前工作树，适合在 PR 分支或 CI 临时分支运行；它不会上传对象存储。更多同步、冲突处理和分支保护说明见 [docs/skill-sync.md](docs/skill-sync.md)。
+
+## 专家和 MCP 目录
+
+`catalog/expert-templates.json` 和 `catalog/mcp-servers.json` 是 Easy Code 桌面端专家市场和 MCP 市场的数据源。改动走 Pull Request，通过 Skill Gate 合入 `main` 后，商城服务每小时自动同步，也可以在管理后台点「立即同步」。
+
+- 校验规则见 `scripts/validate_catalog.rb`，服务端同步时会再校验一次；不通过的文件会被整份拒绝，线上内容保持不变。
+- 专家的 `instructions` 会成为模型的系统提示词，评审时请当作代码看待。
+- 这是公开仓库，MCP 的 `preset` 只能写 `YOUR_` 开头的占位符，不能写真实密钥。
