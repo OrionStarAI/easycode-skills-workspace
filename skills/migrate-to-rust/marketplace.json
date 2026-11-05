@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "migrate-to-rust",
+    "displayName": {
+      "zh": "遗留代码迁移 Rust",
+      "en": "Migrate Codebases to Rust"
+    },
+    "version": "1.0.0",
+    "description": {
+      "zh": "克隆、分析并规划遗留代码库（C++、Fortran、Java、Python、C、Shell）向 100% Safe Rust 的现代化迁移：SoA/SIMD 架构设计、全流程遥测跟踪、测试失败修复闭环、LLVM PGO 性能调优，并产出第一人称工程叙事报告与交互式 HTML 信息图。",
+      "en": "Clones, analyzes, plans, and migrates legacy codebases (C++, Fortran, Java, Python, C, Shell) to a modern, high-performance, deterministic, 100% Safe Rust architecture, tracking live telemetry, test failure/fix cycles, and PGO stages, and producing an AI storytelling report and interactive HTML infographic."
+    },
+    "usageExample": "把这个 C++ 仓库迁移成 100% Safe Rust，用 SoA 架构，做 PGO 调优，最后给我一份迁移报告和 HTML 信息图。"
+  },
+  "storage": {
+    "packageKey": "skills/migrate-to-rust/migrate-to-rust_1.0.0.zip"
+  },
+  "media": {
+    "previews": [],
+    "previewThumbnails": [],
+    "examples": []
+  }
+}
