@@ -232,6 +232,21 @@ def validate_frontmatter(issues, path, skill_name)
     if non_empty_string?(data["upstreamSha"]) && data["upstreamSha"] !~ /\A[0-9a-f]{7,64}\z/i
       issue(issues, path, "upstreamSha must be a hexadecimal commit SHA")
     end
+    if data.key?("upstreamExclude") && !data["upstreamExclude"].nil?
+      excludes =
+        case data["upstreamExclude"]
+        when String then data["upstreamExclude"].split(/[,\n]/).map(&:strip).reject(&:empty?)
+        when Array then data["upstreamExclude"]
+        else
+          issue(issues, path, "upstreamExclude must be a string or an array of strings")
+          nil
+        end
+      excludes&.each do |entry|
+        unless entry.is_a?(String) && safe_relative_asset?(entry.strip.sub(%r{/\z}, ""))
+          issue(issues, path, "upstreamExclude entries must be safe relative paths: #{entry.inspect}")
+        end
+      end
+    end
   end
 
   data

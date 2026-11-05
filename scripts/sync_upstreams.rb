@@ -172,6 +172,40 @@ def safe_join(root, relative)
   path
 end
 
+# Parse the optional `upstreamExclude` frontmatter field. Accepts a string
+# (comma/newline separated) or an array of strings; returns an array of
+# normalized path prefixes. Each entry may contain a trailing `/` (kept for
+# readability, stripped here) and must stay inside the skill directory.
+def normalize_upstream_excludes(value)
+  entries = case value
+            when nil then []
+            when String then value.split(/[,\n]/)
+            when Array then value
+            else raise SyncError, "upstreamExclude must be a string or an array of strings"
+            end
+
+  entries.map do |entry|
+    pattern = entry.to_s.strip.sub(%r{/\z}, "")
+    next if pattern.empty?
+    unless pattern.split("/").all? { |segment| !segment.empty? && segment != "." && segment != ".." }
+      raise SyncError, "upstreamExclude entry is not a safe relative path: #{entry.inspect}"
+    end
+    pattern
+  end.compact.uniq
+end
+
+# True when `relative` (a path relative to the skill root) falls under one of
+# the normalized upstreamExclude prefixes. `demos` covers `demos/_legacy/x.png`
+# and `demos/y.md`; `demos/_legacy` covers only that subtree; `README.md`
+# covers exactly that file.
+def upstream_excluded?(excludes, relative)
+  return false if excludes.nil? || excludes.empty?
+
+  excludes.any? do |pattern|
+    relative == pattern || relative.start_with?("#{pattern}/")
+  end
+end
+
 def write_bytes(path, bytes)
   FileUtils.mkdir_p(File.dirname(path))
   File.binwrite(path, bytes)
@@ -253,6 +287,25 @@ def run_self_test
     rescue SyncError
       # Expected: safe_join must reject paths outside the repository root.
     end
+
+    excludes = normalize_upstream_excludes("assets/audio/bgm, demos/_legacy/\nassets/readme")
+    raise "upstreamExclude normalization failed: #{excludes.inspect}" unless excludes == ["assets/audio/bgm", "demos/_legacy", "assets/readme"]
+    raise "upstreamExclude array form failed" unless normalize_upstream_excludes(["a.md", "b/"]) == ["a.md", "b"]
+    raise "upstreamExclude nil must be empty" unless normalize_upstream_excludes(nil).empty?
+
+    begin
+      normalize_upstream_excludes(["../escape"])
+      raise "upstreamExclude traversal was not rejected"
+    rescue SyncError
+      # Expected: excluded entries must stay inside the skill directory.
+    end
+
+    raise "prefix exclude missed a nested file" unless upstream_excluded?(excludes, "assets/audio/bgm/cat-walk.mp3")
+    raise "prefix exclude missed the directory itself" unless upstream_excluded?(excludes, "demos/_legacy/old.png")
+    raise "prefix exclude must not swallow sibling paths" if upstream_excluded?(excludes, "assets/audio/sfx.json")
+    raise "prefix exclude must not match a mere string prefix" if upstream_excluded?(["demos/_legacy"], "demos/_legacy-old/x.png")
+    raise "exact-file exclude failed" unless upstream_excluded?(["README.md"], "README.md")
+    raise "empty excludes must match nothing" unless upstream_excluded?([], "anything.txt") == false
   end
 
   base = <<~YAML
@@ -318,7 +371,11 @@ Dir[File.join(SKILLS_ROOT, "*", "SKILL.md")].sort.each do |skill_path|
     dir: skill_dir,
     remote: metadata["upstream"],
     source_root: metadata["upstreamPath"],
-    base_sha: metadata["upstreamSha"]
+    base_sha: metadata["upstreamSha"],
+    # Paths (glob patterns or directory/file prefixes) that this repository
+    # deliberately does not vendor, even though the upstream has them. The
+    # sync skips them instead of re-adding missing files unconditionally.
+    exclude: normalize_upstream_excludes(metadata["upstreamExclude"])
   }
 end
 
@@ -364,6 +421,14 @@ Dir.mktmpdir("easycode-skill-sync-") do |temporary_root|
       if source_files.empty?
         raise SyncError, "#{target[:name]}: no files found at upstreamPath #{target[:source_root].inspect}"
       end
+
+      # Paths listed in `upstreamExclude` are deliberately not vendored. Drop
+      # them from the upstream file list so excluded-but-deleted files are
+      # never re-added and excluded-but-upstream-deleted files are not treated
+      # as local modifications.
+      excluded = target[:exclude] || []
+      source_files.reject! { |relative| upstream_excluded?(excluded, relative) }
+      base_files.reject! { |relative| upstream_excluded?(excluded, relative) }
 
       source_set = source_files.to_set
       base_set = base_files.to_set
