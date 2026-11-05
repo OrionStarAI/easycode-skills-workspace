@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "marketplace-curator",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "tasks",
+  "name": {
+    "zh": "技能与市场维护专家",
+    "en": "Skills and marketplace curator"
+  },
+  "description": {
+    "zh": "维护技能、MCP 和专家（团）目录，核对同步状态与发布结果。",
+    "en": "Maintain skills, MCP listings and expert/team templates, and verify synchronization and publication."
+  },
+  "skills": ["marketplace-curator"],
+  "tags": [
+    { "zh": "技能维护", "en": "Skills" },
+    { "zh": "市场同步", "en": "Marketplace sync" }
+  ]
+}

@@ -81,6 +81,10 @@ ruby scripts/sync_upstreams.rb
 
 `catalog/expert-templates.json` 和 `catalog/mcp-servers.json` 是 Easy Code 桌面端专家市场和 MCP 市场的数据源。改动走 Pull Request，通过 Skill Gate 合入 `main` 后，商城服务每小时自动同步，也可以在管理后台点「立即同步」。
 
+新式专家源码放在 `experts/<id>/`：`expert.json` 声明版本、显示信息和技能依赖，`EXPERT.md` 与 `EXPERT.en.md` 分别维护中英文职责。修改后运行 `node scripts/build_expert_catalog.mjs`，将生成的目录索引一并提交；Skill Gate 会检查索引是否与源码一致、技能依赖是否存在。原有直接定义在目录中的模板仍保留。
+
+当前桌面客户端只读取模板的角色说明，还不会自动绑定这里声明的技能，也不会把已创建的本地专家与模板版本关联。依赖技能的新专家要在客户端支持依赖安装和绑定之后才算完整；不要仅凭生成目录就宣称具备所需能力。
+
 - 校验规则见 `scripts/validate_catalog.rb`，服务端同步时会再校验一次；不通过的文件会被整份拒绝，线上内容保持不变。
 - 专家的 `instructions` 会成为模型的系统提示词，评审时请当作代码看待。
 - 这是公开仓库，MCP 的 `preset` 只能写 `YOUR_` 开头的占位符，不能写真实密钥。

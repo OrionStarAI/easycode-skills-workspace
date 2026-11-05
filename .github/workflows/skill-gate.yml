@@ -31,6 +31,12 @@ jobs:
       - name: Test marketplace automation client
         run: node --test skills/marketplace-curator/scripts/marketplace-api.test.mjs
 
+      - name: Test expert package catalog builder
+        run: node --test scripts/build_expert_catalog.test.mjs
+
+      - name: Check generated expert package catalog
+        run: node scripts/build_expert_catalog.mjs --check
+
       - name: Run parser regression test
         run: ruby scripts/validate_skills.rb --self-test
 
