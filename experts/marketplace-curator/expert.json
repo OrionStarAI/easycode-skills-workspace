@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "id": "marketplace-curator",
   "version": "1.0.0",
+  "promptProfile": "general",
   "category": "technology",
   "icon": "tasks",
   "name": {

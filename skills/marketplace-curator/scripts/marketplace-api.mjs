@@ -36,7 +36,8 @@ export async function run(args, options = {}) {
       const results = [];
       for (const name of catalogs) {
         const local = JSON.parse(await loadFile(path.join(arg, 'catalog', `${name}.json`), 'utf8'));
-        const response = await fetchImpl(`${ORIGIN}/api/${name}`, { redirect: 'error', signal: AbortSignal.timeout(15_000) });
+        const suffix = name === 'expert-templates' ? '?capabilities=expert-profiles-v1' : '';
+        const response = await fetchImpl(`${ORIGIN}/api/${name}${suffix}`, { redirect: 'error', signal: AbortSignal.timeout(15_000) });
         if (!response.ok) throw new Error('catalog_unavailable');
         const live = await response.json();
         if (!Array.isArray(local.items) || !Array.isArray(live.items)) throw new Error('invalid_catalog');

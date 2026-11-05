@@ -10,7 +10,7 @@ async function fixture(t) {
   t.after(() => rm(root, { recursive: true, force: true }));
   for (const dir of ['catalog', 'experts/curator', 'skills/helper']) await mkdir(path.join(root, dir), { recursive: true });
   const manifest = {
-    schemaVersion: 1, id: 'curator', version: '1.0.0', category: 'technology', icon: 'tasks',
+    schemaVersion: 1, id: 'curator', version: '1.0.0', promptProfile: 'general', category: 'technology', icon: 'tasks',
     name: { zh: '专家', en: 'Curator' }, description: { zh: '描述', en: 'Description' },
     skills: ['helper'], tags: [],
   };
@@ -27,6 +27,7 @@ test('generates a versioned expert entry and skill dependencies while keeping le
   const result = await buildExpertCatalog(root);
   assert.equal(result.items[0].id, 'old');
   assert.deepEqual(result.items[1].skills, ['helper']);
+  assert.equal(result.items[1].promptProfile, 'general');
   assert.equal(result.items[1].packageVersion, '1.0.0');
   assert.equal(result.items[1].instructions.zh, '中文职责');
   await updateExpertCatalog(root);

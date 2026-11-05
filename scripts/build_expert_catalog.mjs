@@ -22,7 +22,8 @@ export async function buildExpertCatalog(root) {
     if (!entry.isDirectory() || !ID.test(entry.name)) throw new Error(`Invalid expert package: ${entry.name}`);
     const dir = path.join(expertRoot, entry.name);
     const manifest = JSON.parse(await regularFile(path.join(dir, 'expert.json')));
-    if (manifest.schemaVersion !== 1 || manifest.id !== entry.name || !VERSION.test(manifest.version)) {
+    if (manifest.schemaVersion !== 1 || manifest.id !== entry.name || !VERSION.test(manifest.version)
+        || !['general', 'coding'].includes(manifest.promptProfile)) {
       throw new Error(`Invalid expert manifest: ${entry.name}`);
     }
     if (!Array.isArray(manifest.skills) || manifest.skills.length > 32 || new Set(manifest.skills).size !== manifest.skills.length
@@ -45,6 +46,7 @@ export async function buildExpertCatalog(root) {
       name: manifest.name,
       description: manifest.description,
       instructions: { zh, en },
+      promptProfile: manifest.promptProfile,
       skills: manifest.skills,
       packageVersion: manifest.version,
       packageSource: `experts/${entry.name}`,
