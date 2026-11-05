@@ -6,7 +6,7 @@ description: Maintain Easy Code skills, MCP listings, expert and team templates,
 
 # Easy Code 市场维护
 
-Use this skill when maintaining Easy Code skills, MCP listings, expert or team templates, or troubleshooting marketplace sync. The source repository is the configured Git source (`OrionStarAI/easycode-skills-workspace` at the time of writing). Confirm the repository remote and branch before changing it. The marketplace service is a separate repository.
+Use this skill when maintaining Easy Code skills, MCP listings, expert or team templates, or troubleshooting marketplace sync. The only source of truth is GitHub `OrionStarAI/easycode-skills-workspace`, branch `main`. Confirm the repository remote and branch before changing it. The marketplace service is a separate repository and is not a content source.
 
 ## Make source changes durable
 
@@ -25,7 +25,7 @@ node <skill-dir>/scripts/marketplace-api.mjs compare <source-repo-path>
 node <skill-dir>/scripts/marketplace-api.mjs sync <allowed-source-id>
 ```
 
-`status` shows the server's scheduler configuration and allowlisted sources. `compare` is read-only and compares local MCP/expert catalog contents against the live public API; a matching catalog can legitimately retain an older commit in its metadata. It does not prove skills are current. `sync` publishes the configured source's current remote branch, including skills and both catalogs, so use it only when the user has authorized publication. It does not merge a pending branch or publish uncommitted edits.
+`status` shows the scheduler configuration and the one configured source. Proceed only when `githubSourceMatches` is true. `compare` is read-only and compares local MCP/expert catalog contents against the live public API; a matching catalog can legitimately retain an older commit in its metadata. It does not prove skills are current. `sync` publishes the current `main` branch of the sole GitHub source, including skills and both catalogs, so use it only when the user has authorized publication. It does not merge a pending branch or publish uncommitted edits.
 
 Check the returned outcome and request ID. A busy response means another run holds the lock; do not treat it as success. A partial failure or `sync_failed` response means some updates may already be live; check server logs and re-check live contents. A timeout or broken connection leaves the outcome unknown, so inspect status and logs before another attempt. The helper does not retry automatically. Verify changed skills through the public skill API and compare the relevant public catalogs before reporting success. Scheduler settings and timestamps alone do not prove that the intended revision was published.
 
