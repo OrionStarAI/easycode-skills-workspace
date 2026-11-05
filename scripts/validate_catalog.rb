@@ -72,6 +72,15 @@ def expert_errors(raw)
     case t["kind"]
     when "expert"
       errors += text_errors(t["instructions"], 32_000, "#{label}.instructions")
+      if t.key?("promptProfile") && !%w[general coding].include?(t["promptProfile"])
+        errors << "#{label}: invalid prompt profile"
+      end
+      if t.key?("skills")
+        skills = t["skills"]
+        valid = skills.is_a?(Array) && skills.length <= 32 && skills.uniq.length == skills.length &&
+          skills.all? { |skill| skill.is_a?(String) && ID_PATTERN.match?(skill) }
+        errors << "#{label}: invalid skill dependencies" unless valid
+      end
     when "team"
       errors += text_errors(t["roles"], 500, "#{label}.roles")
       errors << "#{label}: leader is not an expert in this file" unless roles.include?(t["leader"])
@@ -138,6 +147,8 @@ def self_test
     [expert_errors({ "items" => [role] }), nil],
     [expert_errors({ "items" => [role.merge("id" => "../x")] }), /invalid/],
     [expert_errors({ "items" => [role.merge("name" => { "zh" => "x" })] }), /name\.en/],
+    [expert_errors({ "items" => [role.merge("promptProfile" => "unknown")] }), /prompt profile/],
+    [expert_errors({ "items" => [role.merge("skills" => ["../x"])] }), /skill dependencies/],
     [expert_errors({ "items" => [role, team] }), /unknown member/],
     [expert_errors({ "items" => [role, team.merge("members" => ["r"])] }), /leader listed/],
   ]
