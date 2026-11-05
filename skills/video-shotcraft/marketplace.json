@@ -6,6 +6,10 @@
       "zh": "镜头工坊产品宣传片",
       "en": "Video Shotcraft Product Promos"
     },
+    "description": {
+      "zh": "用 Remotion 以代码逐帧绘制电影感产品宣传片：基于真实页面截图与 Ink Press 模板，内置 124 张镜头配方卡、节拍同步 BGM 与音效设计，可为成片或单个镜头查找、添加、替换和对齐音效，最终导出 1920×1080/30fps 的 MP4，还可选导出剪映草稿继续编辑。",
+      "en": "Create cinematic product promos with Remotion: real page captures, 124 shot cards, the Ink Press template, beat-synced BGM and sound design; find, add, replace or align SFX in existing videos, and export 1920×1080 MP4 or a JianYing draft."
+    },
     "version": "1.0.0",
     "usageExample": "用真实页面截图把我们的产品首页做成一支电影感宣传片，要有镜头卡节奏、卡点 BGM 和音效设计，最后导出 1920×1080 的 MP4。"
   },
