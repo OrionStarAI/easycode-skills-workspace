@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "video-shotcraft",
+    "displayName": {
+      "zh": "镜头工坊产品宣传片",
+      "en": "Video Shotcraft Product Promos"
+    },
+    "version": "1.0.0",
+    "usageExample": "用真实页面截图把我们的产品首页做成一支电影感宣传片，要有镜头卡节奏、卡点 BGM 和音效设计，最后导出 1920×1080 的 MP4。"
+  },
+  "storage": {
+    "packageKey": "skills/video-shotcraft/video-shotcraft_1.0.0.zip"
+  },
+  "media": {
+    "icon": {
+      "path": "assets/brand/logo-mark.svg",
+      "sourceKey": "skills/icons/video-shotcraft.svg"
+    },
+    "previews": [],
+    "previewThumbnails": [],
+    "examples": []
+  }
+}
