@@ -6,6 +6,7 @@ tags: video, remotion, product-promo, shot-design, beat-sync, sound-design
 upstream: Vincentwei1021/video-shotcraft
 upstreamPath: .
 upstreamSha: 1266a3ec4831289c4d893d42dd5102723658039a
+upstreamExclude: demos/_legacy, assets/readme
 author: Vincentwei1021
 ---
 
