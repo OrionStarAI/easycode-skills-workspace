@@ -23,6 +23,14 @@ jobs:
         with:
           ruby-version: "3.3"
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Test marketplace automation client
+        run: node --test skills/marketplace-curator/scripts/marketplace-api.test.mjs
+
       - name: Run parser regression test
         run: ruby scripts/validate_skills.rb --self-test
 
