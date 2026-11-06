@@ -6,7 +6,7 @@
       "zh": "EasyCAD 安装与启动",
       "en": "EasyCAD Install & Launch"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "usageExample": "帮我安装 EasyCAD 并启动，我想用一句话生成一个带四个安装孔的轴承座三维模型。",
     "description": {
       "zh": "下载、安装并启动 EasyCAD——许愿式 AI CAD 客户端。自动识别 macOS（Apple 芯片/Intel）与 Windows 平台选择对应安装包，完成安装、首次启动与验证；装好后用一句话即可生成可导出 STEP/STL 的参数化三维模型，Agent 底座 Easy Code 随客户端自动配置。",
@@ -14,7 +14,7 @@
     }
   },
   "storage": {
-    "packageKey": "skills/easycad/easycad_1.0.0.zip"
+    "packageKey": "skills/easycad/easycad_1.0.1.zip"
   },
   "media": {
     "icon": {
