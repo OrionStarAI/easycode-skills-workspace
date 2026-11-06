@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "expert-creator",
+    "displayName": { "zh": "专家创建", "en": "Expert Creator" },
+    "description": {
+      "zh": "通过对话设计并创建个人专家，配置工作方式、技能和工具范围。",
+      "en": "Create a personal expert through conversation with a fitting workflow, skills and tool scope."
+    },
+    "version": "1.0.0",
+    "usageExample": "帮我创建一个会议纪要专家，整理讨论、决策和待办。"
+  },
+  "storage": { "packageKey": "skills/expert-creator/expert-creator_1.0.0.zip" },
+  "media": { "examples": [] }
+}
