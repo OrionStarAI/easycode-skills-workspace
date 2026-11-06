@@ -7,9 +7,9 @@
       "zh": "维护技能、MCP 和专家（团）目录，检查来源与同步状态并核对发布结果。",
       "en": "Maintain skills, MCP listings and expert/team templates, inspect sync status and verify publication."
     },
-    "version": "1.0.1",
+    "version": "1.0.2",
     "usageExample": "帮我更新专家市场并检查商城是否同步成功。"
   },
-  "storage": { "packageKey": "skills/marketplace-curator/marketplace-curator_1.0.1.zip" },
+  "storage": { "packageKey": "skills/marketplace-curator/marketplace-curator_1.0.2.zip" },
   "media": { "examples": [] }
 }
