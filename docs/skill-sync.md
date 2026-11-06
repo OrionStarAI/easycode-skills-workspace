@@ -5,7 +5,7 @@
 1. `SKILL.md` 中声明了 `upstream`、`upstreamPath` 和 `upstreamSha` 的技能，参加上游同步。
 2. GitHub Actions 每天 `02:00 UTC`（北京时间 `10:00`）检查上游，也可以在 Actions 页面手动运行 **Sync upstream skills**。
 3. 有更新时，Action 在 `chore/sync-upstream-skills` 分支创建或更新 PR。同步不会直接发布 Marketplace，也不会直接写 GCS。
-4. PR 必须通过 **Skill Gate** 才能合并；合并后生产服务按小时从 GitHub `main` 同步内容，也可通过授权的同步入口立即执行。内容变更不需要服务端发布 tag。
+4. PR 应通过 **Skill Gate** 后合并到 `main`；授权发布时，市场维护技能可通过后台已有接口立即同步，不必等待定时任务或要求用户登录。内容变更不需要服务端发布 tag。
 
 ## GitHub 仓库标签（暂不启用）
 
@@ -99,7 +99,7 @@ ruby scripts/validate_skills.rb
 ruby scripts/sync_upstreams.rb
 ```
 
-同步 PR 合并后，仓库只完成源码备份和审查；生产 EasyCode 服务按小时自动同步本仓库 `main`，将技能 ZIP 与媒体发布到对象存储并更新商城元数据，通常一小时内生效。`release-online-*` tag 位于 GitLab `easycodeskills` 仓库，只用于触发服务端代码的自动构建和部署，与本仓库的内容发布无关。对象存储只作为发布产物和下载分发层，仓库是可审计的源代码备份。
+同步 PR 合并后，生产 EasyCode 服务按小时自动同步本仓库 `main`。用户要求立即发布时，市场维护技能使用 `marketplace-api.mjs admin-sync <backend-repo-path>` 调用后台已有接口，并检查同步结果与线上内容。后台将技能 ZIP 与媒体发布到对象存储并更新商城元数据；对象存储只用于分发，GitHub 是唯一内容来源。`release-online-*` tag 位于 GitLab `easycodeskills` 仓库，仅用于服务端代码发布。
 
 ## 让门禁真正阻断合并
 
