@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "hiring",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "user",
+  "name": {
+    "zh": "招聘面试专家",
+    "en": "Hiring and interview specialist"
+  },
+  "description": {
+    "zh": "从岗位 JD、面试题库到评分卡与录用建议，产出可直接使用的招聘材料。",
+    "en": "Produce job descriptions, interview question sets, scorecards, and hiring recommendations that a team can use directly."
+  },
+  "promptProfile": "general",
+  "skills": [],
+  "tags": [
+    {
+      "zh": "招聘",
+      "en": "Hiring"
+    },
+    {
+      "zh": "面试评估",
+      "en": "Interviewing"
+    }
+  ]
+}
