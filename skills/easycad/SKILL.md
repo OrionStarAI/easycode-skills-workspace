@@ -74,7 +74,13 @@ hdiutil detach "/Volumes/EasyCAD"
 ## 第五步：启动并验证
 
 - macOS：`open -a EasyCAD`
-- Windows：优先用第一步查到的 `InstallLocation`（或 exe 路径）执行 `start "" "<安装目录>\EasyCAD.exe"`；没查到就依次尝试 `%LOCALAPPDATA%\Programs\EasyCAD\EasyCAD.exe`、`C:\Program Files\EasyCAD\EasyCAD.exe`，都失败才考虑重新安装
+- Windows：启动前**必须清掉 `ELECTRON_RUN_AS_NODE` 环境变量**——若它被置位（常见于把 Electron 二进制当 Node 复用的开发工具/AI 客户端会话），EasyCAD.exe 会以 Node 模式运行：无窗口、无报错、读 stdin 到 EOF 即退出，退出码还是 0：
+
+```powershell
+powershell -NoProfile -Command "Remove-Item Env:ELECTRON_RUN_AS_NODE -ErrorAction SilentlyContinue; Start-Process '<安装目录>\EasyCAD.exe'"
+```
+
+`<安装目录>` 优先用第一步查到的 `InstallLocation`；没查到就依次尝试 `%LOCALAPPDATA%\Programs\EasyCAD`、`C:\Program Files\EasyCAD`，都失败才考虑重新安装
 
 验证进程已运行：
 
@@ -89,6 +95,7 @@ tasklist | findstr /i easycad   # Windows
 
 - **装错架构包**（macOS）：无法安装或启动，重新按 `uname -m` 结果选择 arm64/x64 包。
 - **Windows 已装过却判成未装**：不要用 `where EasyCAD` 判断（EasyCAD 不在 PATH），以注册表卸载项和安装目录检查为准；已装就直接启动，不要重复跑安装包。
+- **Windows 启动后进程秒退、退出码 0、无窗口无日志**：第一步先验证**二进制身份**，不要先猜单实例锁或业务逻辑——运行 `& "<安装目录>\EasyCAD.exe" --version`，若输出形如 `v24.22.1` 的纯 Node 版本号，说明 exe 被当成 Node 运行了（环境中存在 `ELECTRON_RUN_AS_NODE=1`；"退出码 0"正是因为它在当 REPL 读 stdin，读到 EOF 正常退出）。按第五步清掉该变量再启动即可。
 - **下载慢或中断**：重试；确认网络可达 `download.easycode.bot`。
 - **macOS 提示已损坏**：见第四步，清除 quarantine 属性即可。
 - **双击 dmg 后拖不动**：确认拖的是卷内的 EasyCAD.app 整体，不是快捷方式。
