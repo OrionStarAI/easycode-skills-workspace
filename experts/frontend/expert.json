@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "frontend",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "panel",
+  "name": {
+    "zh": "前端开发专家",
+    "en": "Frontend developer"
+  },
+  "description": {
+    "zh": "开发页面、组件和交互，处理状态管理、响应式布局与前端性能。",
+    "en": "Build pages, components, and interactions, with state management, responsive layout, and frontend performance."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "前端开发",
+      "en": "Frontend"
+    },
+    {
+      "zh": "组件设计",
+      "en": "Components"
+    }
+  ]
+}

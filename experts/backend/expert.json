@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "backend",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "cpu",
+  "name": {
+    "zh": "后端开发专家",
+    "en": "Backend developer"
+  },
+  "description": {
+    "zh": "设计 API 和数据模型，实现业务逻辑、鉴权与事务处理。",
+    "en": "Design APIs and data models, and implement business logic, authorization, and transactions."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "后端开发",
+      "en": "Backend"
+    },
+    {
+      "zh": "数据库设计",
+      "en": "Databases"
+    }
+  ]
+}

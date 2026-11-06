@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "fullstack",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "code",
+  "name": {
+    "zh": "全栈开发专家",
+    "en": "Full-stack developer"
+  },
+  "description": {
+    "zh": "从需求梳理到前后端实现，协助分析、开发和验证项目。",
+    "en": "Analyze, build, and validate projects from requirements through implementation."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "全栈开发",
+      "en": "Full-stack"
+    },
+    {
+      "zh": "架构设计",
+      "en": "Architecture"
+    }
+  ]
+}

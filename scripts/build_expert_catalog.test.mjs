@@ -47,3 +47,22 @@ test('rejects a missing dependency and an unmanaged entry with the same id', asy
   await writeFile(path.join(root, 'catalog/expert-templates.json'), JSON.stringify({ items: [{ id: 'curator' }] }));
   await assert.rejects(buildExpertCatalog(root), /collides/);
 });
+
+test('requires every expert entry to come from a matching package', async (t) => {
+  const root = await fixture(t);
+  await writeFile(path.join(root, 'catalog/expert-templates.json'), JSON.stringify({ items: [{ id: 'old', kind: 'expert' }] }));
+  await assert.rejects(buildExpertCatalog(root), /expert.*package/i);
+});
+
+test('preserves an implicit legacy prompt profile for older clients', async (t) => {
+  const root = await fixture(t);
+  const manifestPath = path.join(root, 'experts/curator/expert.json');
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+  delete manifest.promptProfile;
+  manifest.skills = [];
+  await writeFile(manifestPath, JSON.stringify(manifest));
+  const result = await buildExpertCatalog(root);
+  assert.equal(result.items[1].id, 'curator');
+  assert.equal(Object.hasOwn(result.items[1], 'promptProfile'), false);
+  assert.deepEqual(result.items[1].skills, []);
+});

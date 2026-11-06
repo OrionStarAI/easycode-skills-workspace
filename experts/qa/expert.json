@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "qa",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "flask",
+  "name": {
+    "zh": "测试专家",
+    "en": "QA engineer"
+  },
+  "description": {
+    "zh": "设计测试方案，编写并执行自动化测试，报告缺陷并做回归验证。",
+    "en": "Design test plans, write and run automated tests, report defects, and verify fixes."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "软件测试",
+      "en": "Testing"
+    },
+    {
+      "zh": "质量保障",
+      "en": "Quality"
+    }
+  ]
+}
