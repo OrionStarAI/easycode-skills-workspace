@@ -15,9 +15,19 @@ description: >
 ## 第一步：检查是否已安装
 
 - macOS：`ls -d /Applications/EasyCAD.app`
-- Windows（CMD/PowerShell）：`where EasyCAD`，或检查开始菜单中是否有 EasyCAD
+- Windows：EasyCAD 安装后**不在 PATH 里**，`where EasyCAD` 查不到不代表没装。先查注册表卸载项（CMD/PowerShell 均可直接运行）：
 
-已安装则直接跳到「启动并验证」，不要重复安装。用户要求重装时先确认，再卸载后重来。
+```powershell
+powershell -NoProfile -Command "Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*,HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* -ErrorAction SilentlyContinue | Where-Object {$_.DisplayName -like '*EasyCAD*'} | Select-Object DisplayName,DisplayVersion,InstallLocation"
+```
+
+注册表查不到时，再检查常见安装目录（任一目录下存在 `EasyCAD.exe` 即视为已安装）：
+
+```cmd
+dir "%LOCALAPPDATA%\Programs\EasyCAD\EasyCAD.exe" 2>nul & dir "C:\Program Files\EasyCAD\EasyCAD.exe" 2>nul & dir "C:\Program Files (x86)\EasyCAD\EasyCAD.exe" 2>nul
+```
+
+已安装（记下查到的 `InstallLocation` 或 exe 路径）就**直接跳到「启动并验证」，绝不要重新运行安装包**。用户明确要求重装时，先卸载再重新安装。
 
 ## 第二步：确认平台与下载链接
 
@@ -62,7 +72,7 @@ hdiutil detach "/Volumes/EasyCAD"
 ## 第五步：启动并验证
 
 - macOS：`open -a EasyCAD`
-- Windows：开始菜单启动 EasyCAD，或运行安装目录下的 `EasyCAD.exe`
+- Windows：优先用第一步查到的 `InstallLocation`（或 exe 路径）执行 `start "" "<安装目录>\EasyCAD.exe"`；没查到就依次尝试 `%LOCALAPPDATA%\Programs\EasyCAD\EasyCAD.exe`、`C:\Program Files\EasyCAD\EasyCAD.exe`，都失败才考虑重新安装
 
 验证进程已运行：
 
@@ -76,6 +86,7 @@ tasklist | findstr /i easycad   # Windows
 ## 常见问题
 
 - **装错架构包**（macOS）：无法安装或启动，重新按 `uname -m` 结果选择 arm64/x64 包。
+- **Windows 已装过却判成未装**：不要用 `where EasyCAD` 判断（EasyCAD 不在 PATH），以注册表卸载项和安装目录检查为准；已装就直接启动，不要重复跑安装包。
 - **下载慢或中断**：重试；确认网络可达 `download.easycode.bot`。
 - **macOS 提示已损坏**：见第四步，清除 quarantine 属性即可。
 - **双击 dmg 后拖不动**：确认拖的是卷内的 EasyCAD.app 整体，不是快捷方式。
