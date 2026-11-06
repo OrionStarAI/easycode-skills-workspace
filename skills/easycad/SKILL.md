@@ -67,7 +67,9 @@ hdiutil detach "/Volumes/EasyCAD"
 
 ### Windows（.exe）
 
-双击 `EasyCAD-v0.1.6-setup-x64.exe` 按安装向导默认选项完成。命令行静默安装可尝试追加 `/S` 参数（NSIS 惯例），失败则回到图形向导安装。
+> ⚠️ 下载的 `EasyCAD-v0.1.6-setup-x64.exe` 是**安装器**，不是应用本体：运行它只会进入安装流程，绝不要把它当作 EasyCAD 启动后等待界面出现。安装完成后，应用本体位于安装目录（默认 `%LOCALAPPDATA%\Programs\EasyCAD\EasyCAD.exe`），此后启动一律用应用本体。
+
+双击 `EasyCAD-v0.1.6-setup-x64.exe` 按安装向导默认选项完成。命令行静默安装可尝试追加 `/S` 参数（NSIS 惯例），失败则回到图形向导安装。安装结束后先确认安装目录里存在 `EasyCAD.exe`（见第一步的目录检查），再进入下一步。
 
 ## 第五步：启动并验证
 
