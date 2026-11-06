@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "review",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "review",
+  "name": {
+    "zh": "代码审查专家",
+    "en": "Code reviewer"
+  },
+  "description": {
+    "zh": "发现代码缺陷、安全风险与回归隐患，给出可执行的建议。",
+    "en": "Find defects, security risks, and regressions with actionable recommendations."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "代码审查",
+      "en": "Code review"
+    },
+    {
+      "zh": "质量保障",
+      "en": "Quality"
+    }
+  ]
+}

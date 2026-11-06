@@ -11,7 +11,7 @@ async function regularFile(file) {
   return readFile(file, 'utf8');
 }
 
-/** Build the public index from each expert package and preserve legacy entries. */
+/** Build expert entries from packages; team entries remain in the catalog. */
 export async function buildExpertCatalog(root) {
   const catalogFile = path.join(root, 'catalog', 'expert-templates.json');
   const original = JSON.parse(await regularFile(catalogFile));
@@ -23,7 +23,7 @@ export async function buildExpertCatalog(root) {
     const dir = path.join(expertRoot, entry.name);
     const manifest = JSON.parse(await regularFile(path.join(dir, 'expert.json')));
     if (manifest.schemaVersion !== 1 || manifest.id !== entry.name || !VERSION.test(manifest.version)
-        || !['general', 'coding'].includes(manifest.promptProfile)) {
+        || (manifest.promptProfile !== undefined && !['general', 'coding'].includes(manifest.promptProfile))) {
       throw new Error(`Invalid expert manifest: ${entry.name}`);
     }
     if (!Array.isArray(manifest.skills) || manifest.skills.length > 32 || new Set(manifest.skills).size !== manifest.skills.length
@@ -46,7 +46,7 @@ export async function buildExpertCatalog(root) {
       name: manifest.name,
       description: manifest.description,
       instructions: { zh, en },
-      promptProfile: manifest.promptProfile,
+      ...(manifest.promptProfile === undefined ? {} : { promptProfile: manifest.promptProfile }),
       skills: manifest.skills,
       packageVersion: manifest.version,
       packageSource: `experts/${entry.name}`,
@@ -58,6 +58,7 @@ export async function buildExpertCatalog(root) {
     if (!item || typeof item !== 'object' || typeof item.id !== 'string' || seen.has(item.id)) throw new Error('Invalid or duplicate catalog id');
     seen.add(item.id);
     if (!item.packageSource) {
+      if (item.kind === 'expert') throw new Error(`Expert entry requires a package: ${item.id}`);
       if (packages.has(item.id)) throw new Error(`Package collides with an unmanaged catalog item: ${item.id}`);
       return item;
     }

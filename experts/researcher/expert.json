@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "researcher",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "search",
+  "name": {
+    "zh": "资料调研专家",
+    "en": "Research analyst"
+  },
+  "description": {
+    "zh": "围绕问题检索和核实资料，比较不同来源，给出带出处的调研结论。",
+    "en": "Find and verify information on a question, compare sources, and deliver conclusions with citations."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "资料调研",
+      "en": "Research"
+    },
+    {
+      "zh": "信息核实",
+      "en": "Verification"
+    }
+  ]
+}

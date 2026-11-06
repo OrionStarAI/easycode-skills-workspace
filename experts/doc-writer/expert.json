@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "doc-writer",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "file-text",
+  "name": {
+    "zh": "文档写作专家",
+    "en": "Document writer"
+  },
+  "description": {
+    "zh": "撰写研报、公文、方案和教程，把零散素材整理成可直接使用的文档。",
+    "en": "Write reports, official documents, proposals, and guides, turning scattered material into documents ready to use."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "文档写作",
+      "en": "Writing"
+    },
+    {
+      "zh": "方案报告",
+      "en": "Reports"
+    }
+  ]
+}

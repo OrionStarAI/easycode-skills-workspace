@@ -62,7 +62,7 @@ author: anthropics
 
 1. 合并通过门禁的技能源码到 `main`；
 2. 生产环境的 EasyCode 服务按小时自动同步本仓库 `main`，打包技能 ZIP、更新 GCS 制品与商城元数据——合入后通常一小时内生效，不需要任何标签；
-3. 只有服务端代码变更才需要在 EasyCodeServer 仓库打 `release-online-*` tag 触发镜像构建与部署，与本仓库无关。
+3. 只有服务端代码变更才需要在 GitLab `easycodeskills` 仓库的 `main` 提交上打 `release-online-*` tag；Open C3 会自动构建并部署，与本仓库的内容同步无关。
 
 因此本仓库不需要为发布打 tag；未来若需要 GitHub tag 直接生成发布包或通知服务端，再单独增加发布 workflow。
 
@@ -81,9 +81,9 @@ ruby scripts/sync_upstreams.rb
 
 `catalog/expert-templates.json` 和 `catalog/mcp-servers.json` 是 Easy Code 桌面端专家市场和 MCP 市场的数据源。改动走 Pull Request，通过 Skill Gate 合入 `main` 后，商城服务每小时自动同步，也可以在管理后台点「立即同步」。
 
-新式专家源码放在 `experts/<id>/`：`expert.json` 声明版本、显示信息和技能依赖，`EXPERT.md` 与 `EXPERT.en.md` 分别维护中英文职责。修改后运行 `node scripts/build_expert_catalog.mjs`，将生成的目录索引一并提交；Skill Gate 会检查索引是否与源码一致、技能依赖是否存在。原有直接定义在目录中的模板仍保留。
+所有市场专家的源码都放在 `experts/<id>/`：`expert.json` 声明版本、显示信息和技能依赖，`EXPERT.md` 与 `EXPERT.en.md` 分别维护中英文职责。不要直接修改索引里的专家内容：修改专家包后运行 `node scripts/build_expert_catalog.mjs`，将生成的 `catalog/expert-templates.json` 一并提交。Skill Gate 会拒绝缺少专家包或与索引不一致的专家，并检查技能依赖是否存在。专家团定义仍直接维护在同一个 GitHub 目录文件中。
 
-支持新格式的桌面客户端会读取工作方式和技能依赖，并在创建专家时绑定；技能仍须先安装或启用。服务端升级后会对旧客户端隐藏其无法使用的新版专家与相关团队。已创建的本地专家不会自动跟随模板版本更新。
+支持新格式的桌面客户端会读取工作方式和技能依赖；支持自动准备依赖的版本会在保存或使用专家时安装或启用所需技能。旧版模板未显式指定 `promptProfile`，以保持旧客户端的可见性；新版客户端按专家类别选择原有默认工作方式。新增专家建议显式指定 `general` 或 `coding`，服务端会对不支持相应能力的旧客户端隐藏无法使用的专家与相关团队。已创建的本地专家不会自动跟随模板版本更新。
 
 - 校验规则见 `scripts/validate_catalog.rb`，服务端同步时会再校验一次；不通过的文件会被整份拒绝，线上内容保持不变。
 - 专家的 `instructions` 会成为模型的系统提示词，评审时请当作代码看待。

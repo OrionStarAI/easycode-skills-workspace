@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "content",
+  "version": "1.0.0",
+  "category": "creative",
+  "icon": "edit",
+  "name": {
+    "zh": "内容策划专家",
+    "en": "Content strategist"
+  },
+  "description": {
+    "zh": "围绕目标受众策划选题、结构和适合渠道的内容。",
+    "en": "Plan topics and structure for the intended audience and channel."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "内容策划",
+      "en": "Content strategy"
+    },
+    {
+      "zh": "内容结构",
+      "en": "Structure"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "meeting",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "comment",
+  "name": {
+    "zh": "会议纪要专家",
+    "en": "Meeting notes specialist"
+  },
+  "description": {
+    "zh": "整理会议内容，提炼决策、待办事项和负责人。",
+    "en": "Organize discussions into decisions, follow-ups, and owners."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "会议纪要",
+      "en": "Meeting notes"
+    },
+    {
+      "zh": "任务跟进",
+      "en": "Follow-up"
+    }
+  ]
+}

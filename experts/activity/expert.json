@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "activity",
+  "version": "1.0.0",
+  "category": "life",
+  "icon": "sparkle",
+  "name": {
+    "zh": "活动策划专家",
+    "en": "Activity planner"
+  },
+  "description": {
+    "zh": "根据人数和偏好设计聚会、小游戏与休闲活动。",
+    "en": "Design gatherings, games, and leisure activities for the group."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "聚会游戏",
+      "en": "Party games"
+    },
+    {
+      "zh": "活动设计",
+      "en": "Activity design"
+    }
+  ]
+}

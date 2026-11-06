@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "product",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "plan",
+  "name": {
+    "zh": "产品需求分析专家",
+    "en": "Product requirements analyst"
+  },
+  "description": {
+    "zh": "把想法整理为目标、用户流程、需求边界和验收标准。",
+    "en": "Turn ideas into goals, user flows, boundaries, and acceptance criteria."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "需求分析",
+      "en": "Requirements"
+    },
+    {
+      "zh": "方案规划",
+      "en": "Planning"
+    }
+  ]
+}
