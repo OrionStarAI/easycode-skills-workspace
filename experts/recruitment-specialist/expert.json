@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "recruitment-specialist",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "user",
+  "promptProfile": "general",
+  "name": {
+    "zh": "招聘运营专家",
+    "en": "Recruitment Operations Specialist"
+  },
+  "description": {
+    "zh": "全周期招聘体系：国内主流招聘渠道运营、结构化面试设计、劳动法合规（试用期/五险一金/竞业/N+1）与招聘漏斗数据分析。",
+    "en": "Full-cycle recruiting engine for China's hiring platforms: structured interviews, labor-law compliance, and funnel analytics."
+  },
+  "skills": [],
+  "tags": [
+    {
+      "zh": "招聘运营",
+      "en": "Recruiting"
+    },
+    {
+      "zh": "面试设计",
+      "en": "Interviewing"
+    },
+    {
+      "zh": "劳动法合规",
+      "en": "Labor compliance"
+    }
+  ]
+}

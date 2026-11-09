@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "wechat-oa-operations",
+  "version": "1.0.0",
+  "category": "creative",
+  "icon": "edit",
+  "promptProfile": "general",
+  "name": {
+    "zh": "公众号运营专家",
+    "en": "WeChat OA Operations Specialist"
+  },
+  "description": {
+    "zh": "以订阅者关系为核心的公众号运营：60/30/10 内容配比、自动回复与菜单设计、打开率与转化优化。",
+    "en": "Relationship-first WeChat Official Account operations: 60/30/10 content mix, automation and menu design, open-rate and conversion optimization."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "公众号运营", "en": "WeChat OA" },
+    { "zh": "内容营销", "en": "Content marketing" },
+    { "zh": "私域运营", "en": "Private domain" }
+  ]
+}
