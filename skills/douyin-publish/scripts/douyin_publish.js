@@ -17,10 +17,11 @@
 //   --healthcheck     只检查登录态即退出（无副作用）
 //   --dry-run         走完全部流程但不点发布（会真实注入文件到表单）
 //
-// 退出码：0 成功 | 1 失败 | 2 未登录/登录超时
+// 退出码：0 成功 | 1 发布前失败 | 2 未登录/登录超时 | 3 发布结果未确认
 // 首次登录时脚本会截图二维码到 /tmp/douyin_login_qr.png 并等待扫码最长 180s。
 
 const fs = await import('fs')
+const path = await import('path')
 
 // ---- 解析命令行参数 ----
 const argv = process.argv.slice(2)
@@ -43,23 +44,31 @@ try {
   process.exit(1)
 }
 
+if (!P || typeof P !== 'object' || Array.isArray(P) ||
+    ['video', 'title', 'desc'].some(key => P[key] != null && typeof P[key] !== 'string') ||
+    (P.tags != null && (!Array.isArray(P.tags) || P.tags.some(t => typeof t !== 'string')))) {
+  cliLog('PARAMS_ERROR — 参数格式无效')
+  process.exit(1)
+}
 const video = (P.video || '').trim()
 const title = (P.title || '').trim()
 const desc = (P.desc || '').trim()
-const tags = (P.tags || []).map(t => (t.startsWith('#') ? t : '#' + t)).join(' ')
+const tags = (P.tags || []).map(t => t.trim()).filter(Boolean).map(t => (t.startsWith('#') ? t : '#' + t)).join(' ')
+if (!hasFlag('--healthcheck')) {
+  if (!video) { cliLog('missing "video" in params'); process.exit(1) }
+  if (!path.isAbsolute(video)) { cliLog('video path must be absolute'); process.exit(1) }
+  if (!fs.existsSync(video)) { cliLog('video not found: ' + video); process.exit(1) }
+  if (!fs.statSync(video).isFile()) { cliLog('video is not a regular file'); process.exit(1) }
+  if (!title) { cliLog('missing "title" in params'); process.exit(1) }
+  if ([...title].length > 30) { cliLog('title too long (>30 chars): ' + title); process.exit(1) }
+}
 
-// ---- 任务空间获取（用户可能中途接管过，逐级降级）----
+// ---- 任务空间获取；不可用或已由用户接管时，不自动夺回控制权 ----
 async function acquireSpace(name) {
   try { return await useOrCreateTaskSpace(name) } catch (e) {
-    cliLog('useOrCreateTaskSpace failed: ' + e.message)
+    cliLog('TASK_SPACE_UNAVAILABLE — 任务空间不可用或已由用户接管，请在 ego lite 中处理')
+    process.exit(1)
   }
-  const spaces = await listTaskSpaces()
-  const mine = spaces.find(s => s.name === name)
-  if (!mine) throw new Error('task space not found: ' + name)
-  try { return await takeOverTaskSpace(mine.id) } catch (e) {
-    cliLog('takeOverTaskSpace failed: ' + e.message)
-  }
-  return await claimTaskSpace(mine.id)
 }
 
 const task = await acquireSpace(SPACE)
@@ -93,11 +102,7 @@ if (!(await isLoggedIn())) {
 
 if (hasFlag('--healthcheck')) { cliLog('HEALTHCHECK_PASS'); process.exit(0) }
 
-// ---- 参数校验 ----
-if (!video) { cliLog('missing "video" in params'); process.exit(1) }
-if (!fs.existsSync(video)) { cliLog('video not found: ' + video); process.exit(1) }
-if (!title) { cliLog('missing "title" in params'); process.exit(1) }
-if ([...title].length > 30) { cliLog('title too long (>30 chars): ' + title); process.exit(1) }
+// ---- 已验证参数 ----
 const descLine = [desc, tags].filter(Boolean).join(' ')
 cliLog('video: ' + video)
 cliLog('title: ' + title)
@@ -105,7 +110,8 @@ cliLog('desc : ' + descLine)
 
 // ---- CDP 注入文件（页面 JS 无法给 input[type=file] 赋值，必须走 CDP）----
 const doc = await cdp('DOM.getDocument', {})
-const node = await cdp('DOM.querySelector', { nodeId: doc.root.nodeId, selector: 'input[type=file]' })
+let node = await cdp('DOM.querySelector', { nodeId: doc.root.nodeId, selector: 'input[type=file][accept*=video]' })
+if (!node.nodeId) node = await cdp('DOM.querySelector', { nodeId: doc.root.nodeId, selector: 'input[type=file]' })
 if (!node.nodeId) { cliLog('file input not found — 页面未加载完成'); process.exit(1) }
 await cdp('DOM.setFileInputFiles', { nodeId: node.nodeId, files: [video] })
 cliLog('file injected')
@@ -129,6 +135,7 @@ const fillTitle = await js(`(() => {
   return 'ok'
 })()`)
 cliLog('fill title: ' + fillTitle)
+if (fillTitle !== 'ok') { cliLog('TITLE_NOT_SET — 无法填写标题，中止'); process.exit(1) }
 
 // ---- 填描述+话题（contenteditable 富文本：execCommand insertText）----
 const fillDesc = await js(`(() => {
@@ -139,6 +146,7 @@ const fillDesc = await js(`(() => {
   return 'ok'
 })()`)
 cliLog('fill desc: ' + fillDesc)
+if (fillDesc !== 'ok') { cliLog('DESC_NOT_SET — 无法填写简介，中止'); process.exit(1) }
 await wait(2)
 
 // 回读校验
@@ -146,9 +154,28 @@ const check = await js(`(() => ({
   title: ([...document.querySelectorAll('input.semi-input')].find(i => (i.placeholder || '').includes('作品标题')) || {}).value || '',
   desc: (document.querySelector('.zone-container.editor-kit-container') || {}).innerText || ''
 }))()`)
-if (!check.title) { cliLog('TITLE_NOT_SET — 回读为空，中止'); process.exit(1) }
+const normalize = (text) => String(text || '').replace(/\s+/gu, ' ').trim()
+if (normalize(check.title) !== normalize(title)) { cliLog('TITLE_MISMATCH — 页面标题与请求不一致，中止'); process.exit(1) }
+if (normalize(check.desc) !== normalize(descLine)) { cliLog('DESC_MISMATCH — 页面简介与请求不一致，中止'); process.exit(1) }
 cliLog('verify title: ' + check.title)
 cliLog('verify desc : ' + String(check.desc).slice(0, 80))
+
+// 编辑器出现不等于上传完成；要求有远端视频预览或重新上传控件，且无上传进度或失败提示。
+let uploadReady = false
+for (let i = 0; i < 60; i++) {
+  const upload = await js(`(() => {
+    const visible = el => !!(el.getClientRects().length) && getComputedStyle(el).visibility !== 'hidden'
+    const preview = [...document.querySelectorAll('video[src^="https://"], video[src^="http://"]')].some(visible)
+    const reupload = [...document.querySelectorAll('button, span, div')].some(el => visible(el) && el.childElementCount === 0 && el.innerText.trim() === '重新上传')
+    const progress = [...document.querySelectorAll('[class*="progress-bar"], [role="progressbar"]')].some(visible)
+    const failed = document.body.innerText.includes('上传失败')
+    return { ready: (preview || reupload) && !progress && !failed, failed }
+  })()`)
+  if (upload.failed) { cliLog('UPLOAD_FAILED — 视频上传失败，中止'); process.exit(1) }
+  if (upload.ready) { uploadReady = true; break }
+  await wait(3)
+}
+if (!uploadReady) { cliLog('UPLOAD_UNCONFIRMED — 未确认视频上传完成，中止'); process.exit(1) }
 
 // ---- 等内容安全检测（"检测中"消失，最长 120s）----
 let checkDone = false
@@ -156,7 +183,8 @@ for (let i = 0; i < 40; i++) {
   if (!(await js('document.body.innerText.includes("检测中")'))) { checkDone = true; break }
   await wait(3)
 }
-cliLog('content check ' + (checkDone ? 'done' : 'timeout (continuing)'))
+if (!checkDone) { cliLog('CONTENT_CHECK_TIMEOUT — 内容检测未完成，中止'); process.exit(1) }
+cliLog('content check done')
 
 const st = await js(`(() => ({
   publishBtn: !!([...document.querySelectorAll('button')].find(b => b.innerText.trim() === '发布' && !b.disabled)),
@@ -164,19 +192,35 @@ const st = await js(`(() => ({
 }))()`)
 cliLog('state: ' + JSON.stringify(st))
 if (!st.publishBtn) { cliLog('PUBLISH_BUTTON_UNAVAILABLE — 请人工检查 ego lite 页面'); process.exit(1) }
+if (st.err.length) { cliLog('FORM_ERRORS — 请人工检查 ego lite 页面'); process.exit(1) }
 
 if (hasFlag('--dry-run') || hasFlag('--dry_run') || P.dry_run === true) { cliLog('DRYRUN_OK — 全部前置就绪，未点击发布'); process.exit(0) }
 
 // ---- 发布 ----
-await js(`(() => { const b = [...document.querySelectorAll('button')].find(x => x.innerText.trim() === '发布' && !x.disabled); if (b) b.click(); return !!b })()`)
+let clicked = false
+try {
+  clicked = await js(`(() => { const b = [...document.querySelectorAll('button')].find(x => x.innerText.trim() === '发布' && !x.disabled); if (b) b.click(); return !!b })()`)
+} catch (_) {
+  cliLog('PUBLISH_UNCONFIRMED — 无法判断是否点击发布，请先到作品管理核对，不要重试')
+  process.exit(3)
+}
+if (!clicked) { cliLog('PUBLISH_NOT_CLICKED — 发布按钮不可用'); process.exit(1) }
 cliLog('publish clicked')
 
 let published = false
-for (let i = 0; i < 20; i++) {
-  await wait(3)
-  if (String(await js('location.href')).includes('content/manage')) { published = true; break }
+let confirmed = false
+try {
+  for (let i = 0; i < 20; i++) {
+    await wait(3)
+    if (String(await js('location.href')).includes('content/manage')) { published = true; break }
+  }
+  if (published) {
+    await wait(2)
+    confirmed = await js('document.body.innerText.includes("发布成功")')
+  }
+} catch (_) {
+  // A click was already sent; an interrupted check is an unknown outcome.
 }
-if (!published) { cliLog('PUBLISH_UNCONFIRMED — 未跳转到作品管理页，请人工确认'); process.exit(1) }
-await wait(2)
-const confirm = await js('document.body.innerText.includes("发布成功")')
-cliLog(confirm ? 'PUBLISH_SUCCESS — 视频已发布' : 'PUBLISH_REDIRECT_OK — 已到作品管理页，请人工确认')
+if (confirmed) { cliLog('PUBLISH_SUCCESS — 视频已发布'); process.exit(0) }
+cliLog('PUBLISH_UNCONFIRMED — 已点击发布但未确认结果，请先到作品管理核对，不要重试')
+process.exit(3)

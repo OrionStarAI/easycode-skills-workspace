@@ -23,8 +23,14 @@ TMP=$(mktemp /tmp/douyin_build_XXXXXX.js)
 PJSON=$(mktemp /tmp/douyin_p_XXXXXX.json)
 trap 'rm -f "$TMP" "$PJSON"' EXIT
 
-# 基础参数：复制用户 JSON（不存在则空对象），再叠加标志
-if [ -f "$PARAMS" ]; then cp "$PARAMS" "$PJSON"; else echo '{}' > "$PJSON"; fi
+# 健康检查不读取旧的发布参数，避免被残留 JSON 影响或误用。
+if [ "$FLAGS" = "healthcheck" ]; then
+  echo '{}' > "$PJSON"
+elif [ -f "$PARAMS" ]; then
+  cp "$PARAMS" "$PJSON"
+else
+  echo '{}' > "$PJSON"
+fi
 if [ -n "$FLAGS" ]; then
   if command -v jq >/dev/null 2>&1; then
     jq --arg f "$FLAGS" '. + {($f): true}' "$PJSON" > "$PJSON.tmp" && mv "$PJSON.tmp" "$PJSON"
