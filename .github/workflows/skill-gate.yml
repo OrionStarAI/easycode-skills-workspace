@@ -31,6 +31,9 @@ jobs:
       - name: Test marketplace automation client
         run: node --test skills/marketplace-curator/scripts/marketplace-api.test.mjs
 
+      - name: Test WeChat official account skill
+        run: python3 scripts/test_wechat_official_account.py
+
       - name: Test expert package catalog builder
         run: node --test scripts/build_expert_catalog.test.mjs
 
