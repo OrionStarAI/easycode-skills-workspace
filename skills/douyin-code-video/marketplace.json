@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "douyin-code-video",
+    "displayName": {
+      "zh": "代码短视频与抖音发布",
+      "en": "Code Video for Douyin"
+    },
+    "description": {
+      "zh": "用代码制作可编辑的竖屏短视频，验证成片后按需通过现有抖音发布技能上传。",
+      "en": "Create an editable short-form video with code, verify the render, and optionally publish it through the existing Douyin skill."
+    },
+    "version": "1.0.0",
+    "usageExample": "把这篇文章做成一支竖屏动画短视频，配字幕并发到我的抖音。"
+  },
+  "storage": { "packageKey": "skills/douyin-code-video/douyin-code-video_1.0.0.zip" },
+  "media": { "examples": [] }
+}
