@@ -34,6 +34,9 @@ jobs:
       - name: Test WeChat official account skill
         run: python3 scripts/test_wechat_official_account.py
 
+      - name: Test signed-in WeChat account statistics
+        run: node --test scripts/browser_wechat_daily.test.mjs
+
       - name: Test expert package catalog builder
         run: node --test scripts/build_expert_catalog.test.mjs
 

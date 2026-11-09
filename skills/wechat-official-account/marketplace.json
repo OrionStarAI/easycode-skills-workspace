@@ -7,11 +7,11 @@
       "en": "WeChat Articles and Analytics"
     },
     "description": {
-      "zh": "查询自己管理的公众号文章及其阅读、分享和收藏人数，也支持将 HTML 保存到草稿箱；需要账号 API 权限。",
-      "en": "Read published articles and reader, share and favorite counts for an authorized WeChat account, or save HTML as a draft. API access is required."
+      "zh": "通过公众号后台或数据报表分析每日阅读趋势；拥有接口权限时可查询单篇文章数据，也支持保存草稿。",
+      "en": "Analyze daily account readership from the signed-in WeChat backend or an export, query individual articles when API access is available, and save drafts."
     },
     "version": "1.0.0",
-    "usageExample": "查询我的公众号上周发表的文章，看看哪篇阅读人数最多。"
+    "usageExample": "看看我的公众号最近一周每天有多少人阅读，分析一下有什么变化。"
   },
   "storage": { "packageKey": "skills/wechat-official-account/wechat-official-account_1.0.0.zip" },
   "media": { "examples": [] }

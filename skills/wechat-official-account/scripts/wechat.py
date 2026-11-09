@@ -15,7 +15,7 @@ import urllib.request
 import uuid
 
 
-COMMANDS = ("list-articles", "get-article-stats", "upload-cover",
+COMMANDS = ("list-articles", "get-article-stats", "get-daily-reads", "upload-cover",
             "upload-article-image", "create-draft")
 IMAGE_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
                ".gif": "image/gif", ".webp": "image/webp"}
@@ -36,6 +36,19 @@ def nonempty(value):
     return isinstance(value, str) and bool(value.strip())
 
 
+def parse_statistics_date(value, field):
+    if not isinstance(value, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", value):
+        invalid(f"{field} 必须是 YYYY-MM-DD")
+    try:
+        day = date.fromisoformat(value)
+    except ValueError:
+        invalid(f"{field} 必须是有效日期")
+    today = datetime.now(timezone(timedelta(hours=8))).date()
+    if not date(2025, 11, 1) <= day < today:
+        invalid(f"{field} 必须是 2025-11-01 起、北京时间今天之前的日期")
+    return day
+
+
 def validate(command, params):
     if command not in COMMANDS:
         invalid("不支持的操作")
@@ -44,6 +57,7 @@ def validate(command, params):
     allowed = {
         "list-articles": {"offset", "count", "includeContent"},
         "get-article-stats": {"date", "msgId"},
+        "get-daily-reads": {"startDate", "endDate", "msgId"},
         "upload-cover": {"imagePath"},
         "upload-article-image": {"imagePath"},
         "create-draft": {"title", "content", "author", "digest", "contentSourceUrl",
@@ -61,18 +75,16 @@ def validate(command, params):
         if type(p["includeContent"]) is not bool:
             invalid("includeContent 必须是布尔值")
     elif command == "get-article-stats":
-        value = p.get("date")
-        if not isinstance(value, str) or not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", value):
-            invalid("date 必须是 YYYY-MM-DD")
-        try:
-            day = date.fromisoformat(value)
-        except ValueError:
-            invalid("date 必须是有效日期")
-        today = datetime.now(timezone(timedelta(hours=8))).date()
-        if not date(2025, 11, 1) <= day < today:
-            invalid("date 必须是 2025-11-01 起、北京时间今天之前的发表日期")
+        parse_statistics_date(p.get("date"), "date")
         if "msgId" in p and not nonempty(p["msgId"]):
             invalid("msgId 必须是非空字符串")
+    elif command == "get-daily-reads":
+        start = parse_statistics_date(p.get("startDate"), "startDate")
+        end = parse_statistics_date(p.get("endDate"), "endDate")
+        if end < start or (end - start).days >= 31:
+            invalid("日期范围需按时间顺序，且一次最多查询 31 天")
+        if not nonempty(p.get("msgId")):
+            invalid("msgId 必须是统计接口返回的非空文章标识")
     elif command.startswith("upload-"):
         if not nonempty(p.get("imagePath")):
             invalid("imagePath 必须是非空字符串")
@@ -267,6 +279,53 @@ class WeChatAPI:
             })
         return {"date": p["date"], "isDelayed": data.get("is_delay"), "items": items}
 
+    def daily_reads(self, p):
+        start, end = date.fromisoformat(p["startDate"]), date.fromisoformat(p["endDate"])
+        days = []
+        while start <= end:
+            day = start.isoformat()
+            data = self.post("datacube/getarticleread", {"begin_date": day, "end_date": day})
+            rows = data.get("list")
+            if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+                raise WeChatError("微信每日阅读数据响应格式无效")
+            matches = [row for row in rows if row.get("msgid") == p["msgId"]]
+            if len(matches) > 1:
+                raise WeChatError("微信返回重复文章数据，无法确定每日阅读人数")
+            detail = matches[0].get("detail") if matches else None
+            if matches and not isinstance(detail, dict):
+                raise WeChatError("微信每日阅读数据响应格式无效")
+            if matches and matches[0].get("ref_date", day) != day:
+                raise WeChatError("微信返回的统计日期与查询日期不一致")
+            readers = detail.get("read_user") if detail is not None else None
+            if readers is not None and (type(readers) is not int or readers < 0):
+                raise WeChatError("微信返回的阅读人数格式无效")
+            raw_sources = detail.get("read_user_source") if detail is not None else None
+            if raw_sources is not None and not isinstance(raw_sources, list):
+                raise WeChatError("微信返回的阅读来源格式无效")
+            sources = None
+            if raw_sources is not None:
+                sources = []
+                for source in raw_sources:
+                    if not isinstance(source, dict):
+                        raise WeChatError("微信返回的阅读来源格式无效")
+                    count, scene = source.get("user_count"), source.get("scene_desc")
+                    if count is not None and (type(count) is not int or count < 0):
+                        raise WeChatError("微信返回的阅读来源人数格式无效")
+                    if scene is not None and not isinstance(scene, str):
+                        raise WeChatError("微信返回的阅读来源名称格式无效")
+                    sources.append({"scene": scene, "readUsers": count})
+            previous = days[-1]["readUsers"] if days else None
+            change = readers - previous if readers is not None and previous is not None else None
+            rate = round(change / previous * 100, 2) if change is not None and previous else None
+            delayed = data.get("is_delay")
+            days.append({
+                "date": day, "hasRecord": bool(matches), "readUsers": readers,
+                "readUsersSources": sources, "isDelayed": delayed if type(delayed) is bool else None,
+                "changeFromPreviousDay": change, "changeRateFromPreviousDay": rate,
+            })
+            start += timedelta(days=1)
+        return {"msgId": p["msgId"], "startDate": p["startDate"], "endDate": p["endDate"], "days": days}
+
     def create_draft(self, p, image=None):
         thumb = self.upload(image)["mediaId"] if image is not None else p["thumbMediaId"]
         article = {"title": p["title"], "content": p["content"], "thumb_media_id": thumb}
@@ -292,6 +351,8 @@ def execute(command, params):
             result = api.list_articles(p)
         elif command == "get-article-stats":
             result = api.article_stats(p)
+        elif command == "get-daily-reads":
+            result = api.daily_reads(p)
         elif command == "create-draft":
             result = api.create_draft(p, image)
         else:
