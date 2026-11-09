@@ -221,6 +221,6 @@ try {
 } catch (_) {
   // A click was already sent; an interrupted check is an unknown outcome.
 }
-if (confirmed) { cliLog('PUBLISH_SUCCESS — 视频已发布'); process.exit(0) }
+if (confirmed) { cliLog('PUBLISH_SUCCESS — 平台显示发布成功，审核状态以作品管理为准'); process.exit(0) }
 cliLog('PUBLISH_UNCONFIRMED — 已点击发布但未确认结果，请先到作品管理核对，不要重试')
 process.exit(3)
