@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "fullstack",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "category": "technology",
   "icon": "code",
   "name": {
@@ -9,18 +9,23 @@
     "en": "Full-stack developer"
   },
   "description": {
-    "zh": "从需求梳理到前后端实现，协助分析、开发和验证项目。",
-    "en": "Analyze, build, and validate projects from requirements through implementation."
+    "zh": "把业务需求逐步做成可运行的产品，贯通需求、前后端开发、测试与交付。",
+    "en": "Turn business needs into working software through requirements, frontend and backend development, testing, and delivery."
   },
-  "skills": [],
+  "skills": [
+    "forge-prd-entity",
+    "frontend-design",
+    "webapp-testing",
+    "security-audit"
+  ],
   "tags": [
     {
       "zh": "全栈开发",
       "en": "Full-stack"
     },
     {
-      "zh": "架构设计",
-      "en": "Architecture"
+      "zh": "阶段交付",
+      "en": "Staged delivery"
     }
   ]
 }
