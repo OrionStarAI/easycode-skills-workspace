@@ -53,7 +53,7 @@ EOF
 ~/.easycode-user/skills/douyin-publish/scripts/douyin_publish.sh --params /tmp/douyin_params.json --dry-run
 ```
 
-输出 `DRYRUN_OK` 表示发布按钮可用、内容检测通过。
+输出 `DRYRUN_OK` 表示上传和文案校验完成、发布按钮可用，且页面没有显示检测中；这不代表封面、发布设置或平台审核已通过。若出现 `COVER_REVIEW_REQUIRED`，请在页面检查封面提示。
 
 ### 3. 发布前与用户确认发布信息
 
@@ -68,12 +68,12 @@ EOF
 | desc | 可选 | 描述文案 |
 | tags | 可选 | 字符串数组，自动加 `#` |
 
-退出码：0 已确认成功（演练为前置检查通过）；1 发布前失败；2 未登录/扫码超时；3 点击后的发布结果未确认。只返回码 3 时先核对作品管理，不能重复提交。
+退出码：0 已确认成功（演练仅表示已实现的上传与文案检查通过）；1 发布前失败；2 未登录/扫码超时；3 点击后的发布结果未确认。只返回码 3 时先核对作品管理，不能重复提交。
 
 ## 实现要点（改脚本前必读）
 
 - **标题是 React 受控 input**：用 `HTMLInputElement.prototype.value` 原生 setter + 派发 `input` 事件，直接赋值不生效
-- **描述是 contenteditable 富文本**：focus 后 `document.execCommand('insertText')`
+- **描述是 contenteditable 富文本**：已填写相同内容时保留；有不同的已有内容时停止，不重复插入或覆盖。空编辑器用 `document.execCommand('insertText')`；回读时忽略编辑器生成的零宽占位字符。
 - **发布按钮精确匹配文本 `发布` 且 `!disabled`**：页面有"发布暂存离开"等相似按钮，勿模糊匹配
 - **上传完成后才能发布**：等待远端视频预览或“重新上传”控件，并确认没有可见进度条与“上传失败”。等待超时就停止，不猜测成功。
 - **必须等"检测中"消失再点发布**；检测超时就停止，不继续点击。
@@ -89,5 +89,6 @@ EOF
 - `ego-browser: command not found` → 运行 ego lite 一次；或看 ego lite 内置技能 ego-browser 的 references/install.md
 - 卡 NOT_LOGGED_IN → 确认 ego lite 窗口显示抖音登录页；扫码后手机若要短信验证按提示完成
 - `file input not found` → 上传页未加载完，重跑
+- 上传期间遇到权限弹窗等中断时，先检查现有表单和视频状态，不要盲目重新上传或覆盖已有内容。
 - `PUBLISH_UNCONFIRMED` → 去 ego lite 看页面，可能弹人工验证
 - 首次登录等扫码可能跑 3 分钟，建议 run_in_background

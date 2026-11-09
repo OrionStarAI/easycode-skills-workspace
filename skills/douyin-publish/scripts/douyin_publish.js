@@ -15,7 +15,7 @@
 // 命令行参数（process.argv 在该运行时可用）：
 //   --params <file>   参数 JSON 文件（推荐）
 //   --healthcheck     只检查登录态即退出（无副作用）
-//   --dry-run         走完全部流程但不点发布（会真实注入文件到表单）
+//   --dry-run         上传并检查已实现的表单字段，不点发布
 //
 // 退出码：0 成功 | 1 发布前失败 | 2 未登录/登录超时 | 3 发布结果未确认
 // 首次登录时脚本会截图二维码到 /tmp/douyin_login_qr.png 并等待扫码最长 180s。
@@ -146,12 +146,16 @@ if (fillTitle !== 'ok') { cliLog('TITLE_NOT_SET — 无法填写标题，中止'
 const fillDesc = await js(`(() => {
   const el = document.querySelector('.zone-container.editor-kit-container')
   if (!el) return 'no-editor'
+  const normalized = text => String(text || '').replace(/[\\u200b\\ufeff]/g, '').replace(/\\s+/gu, ' ').trim()
+  const current = normalized(el.innerText)
+  const requested = normalized(${JSON.stringify(descLine)})
+  if (current === requested) return 'already-set'
+  if (current) return 'editor-not-empty'
   el.focus()
-  document.execCommand('insertText', false, ${JSON.stringify(descLine)})
-  return 'ok'
+  return document.execCommand('insertText', false, ${JSON.stringify(descLine)}) ? 'ok' : 'insert-failed'
 })()`)
 cliLog('fill desc: ' + fillDesc)
-if (fillDesc !== 'ok') { cliLog('DESC_NOT_SET — 无法填写简介，中止'); process.exit(1) }
+if (fillDesc !== 'ok' && fillDesc !== 'already-set') { cliLog('DESC_NOT_SET — 简介非空或无法填写，中止'); process.exit(1) }
 await wait(2)
 
 // 回读校验
@@ -159,7 +163,7 @@ const check = await js(`(() => ({
   title: ([...document.querySelectorAll('input.semi-input')].find(i => (i.placeholder || '').includes('作品标题')) || {}).value || '',
   desc: (document.querySelector('.zone-container.editor-kit-container') || {}).innerText || ''
 }))()`)
-const normalize = (text) => String(text || '').replace(/\s+/gu, ' ').trim()
+const normalize = (text) => String(text || '').replace(/[\u200b\ufeff]/g, '').replace(/\s+/gu, ' ').trim()
 if (normalize(check.title) !== normalize(title)) { cliLog('TITLE_MISMATCH — 页面标题与请求不一致，中止'); process.exit(1) }
 if (normalize(check.desc) !== normalize(descLine)) { cliLog('DESC_MISMATCH — 页面简介与请求不一致，中止'); process.exit(1) }
 cliLog('verify title: ' + check.title)
@@ -189,17 +193,19 @@ for (let i = 0; i < 40; i++) {
   await wait(3)
 }
 if (!checkDone) { cliLog('CONTENT_CHECK_TIMEOUT — 内容检测未完成，中止'); process.exit(1) }
-cliLog('content check done')
+cliLog('content check no longer pending')
 
 const st = await js(`(() => ({
   publishBtn: !!([...document.querySelectorAll('button')].find(b => b.innerText.trim() === '发布' && !b.disabled)),
+  coverIssue: document.body.innerText.includes('封面缺失') || document.body.innerText.includes('封面诊断失败'),
   err: [...document.querySelectorAll('[class*=error],[class*=Error]')].map(e => e.innerText.trim()).filter(Boolean).slice(0, 3)
 }))()`)
 cliLog('state: ' + JSON.stringify(st))
 if (!st.publishBtn) { cliLog('PUBLISH_BUTTON_UNAVAILABLE — 请人工检查 ego lite 页面'); process.exit(1) }
 if (st.err.length) { cliLog('FORM_ERRORS — 请人工检查 ego lite 页面'); process.exit(1) }
+if (st.coverIssue) cliLog('COVER_REVIEW_REQUIRED — 页面提示封面缺失或诊断失败，请人工检查')
 
-if (hasFlag('--dry-run') || hasFlag('--dry_run') || P.dry_run === true) { cliLog('DRYRUN_OK — 全部前置就绪，未点击发布'); process.exit(0) }
+if (hasFlag('--dry-run') || hasFlag('--dry_run') || P.dry_run === true) { cliLog('DRYRUN_OK — 上传和文案校验完成，未点击发布；封面及发布设置请在页面核对'); process.exit(0) }
 
 // ---- 发布 ----
 let clicked = false

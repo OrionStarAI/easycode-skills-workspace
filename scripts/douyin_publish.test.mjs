@@ -56,7 +56,7 @@ async function simulate(options = {}) {
     };
     if (source.includes('const reupload =')) return options.upload ?? { ready: true, failed: false };
     if (source === 'document.body.innerText.includes("检测中")') return options.checking ?? false;
-    if (source.includes('publishBtn:')) return { publishBtn: options.button !== false, err: options.errors ?? [] };
+    if (source.includes('publishBtn:')) return { publishBtn: options.button !== false, coverIssue: options.coverIssue ?? false, err: options.errors ?? [] };
     if (source.includes('b.click()')) {
       stats.clicks++;
       if (options.clickThrows) throw new Error('click state unknown');
@@ -134,6 +134,20 @@ test('refuses an altered title or missing description and tags', async () => {
   }
 });
 
+test('accepts the editor zero-width placeholder and does not duplicate an existing description', async () => {
+  const result = await simulate({ argv: ['--dry_run'], descFill: 'already-set', returnedDesc: '测试说明 #科普\u200b' });
+  assert.equal(result.code, 0);
+  assert.equal(result.clicks, 0);
+  assert.ok(result.logs.some((line) => line.includes('DRYRUN_OK')));
+});
+
+test('stops rather than overwriting a different description', async () => {
+  const result = await simulate({ descFill: 'editor-not-empty' });
+  assert.equal(result.code, 1);
+  assert.equal(result.clicks, 0);
+  assert.ok(result.logs.some((line) => line.includes('DESC_NOT_SET')));
+});
+
 test('does not publish a failed or unconfirmed upload', async () => {
   for (const upload of [{ ready: false, failed: true }, { ready: false, failed: false }]) {
     const result = await simulate({ upload });
@@ -157,6 +171,15 @@ test('dry run uploads to the form but never clicks publish', async () => {
   assert.equal(result.uploads, 1);
   assert.equal(result.clicks, 0);
   assert.ok(result.logs.some((line) => line.includes('DRYRUN_OK')));
+});
+
+test('dry run reports cover problems without claiming everything is ready', async () => {
+  const result = await simulate({ argv: ['--dry_run'], coverIssue: true });
+  assert.equal(result.code, 0);
+  assert.equal(result.clicks, 0);
+  assert.ok(result.logs.some((line) => line.includes('COVER_REVIEW_REQUIRED')));
+  assert.ok(result.logs.some((line) => line.includes('封面及发布设置请在页面核对')));
+  assert.ok(result.logs.every((line) => !line.includes('全部前置就绪')));
 });
 
 test('a click exception, missing success signal, or disconnected status has unknown outcome', async () => {
