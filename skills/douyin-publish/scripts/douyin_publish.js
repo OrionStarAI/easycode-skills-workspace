@@ -103,6 +103,11 @@ if (!(await isLoggedIn())) {
 if (hasFlag('--healthcheck')) { cliLog('HEALTHCHECK_PASS'); process.exit(0) }
 
 // ---- 已验证参数 ----
+const existingDraft = await js('document.body.innerText.includes("你还有上次未发布的视频")')
+if (existingDraft) {
+  cliLog('EXISTING_DRAFT — 页面提示有未发布的视频，先处理原稿后再上传；不会自动放弃或覆盖')
+  process.exit(1)
+}
 const descLine = [desc, tags].filter(Boolean).join(' ')
 cliLog('video: ' + video)
 cliLog('title: ' + title)

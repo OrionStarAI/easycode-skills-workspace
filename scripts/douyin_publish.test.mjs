@@ -46,6 +46,7 @@ async function simulate(options = {}) {
     throw new Error(`unexpected CDP ${method}`);
   };
   const js = async (source) => {
+    if (source === 'document.body.innerText.includes("你还有上次未发布的视频")') return options.existingDraft ?? false;
     if (source === "!!document.querySelector('.zone-container.editor-kit-container')") return true;
     if (source.includes('Object.getOwnPropertyDescriptor(window.HTMLInputElement')) return options.titleFill ?? 'ok';
     if (source.includes("document.execCommand('insertText'")) return options.descFill ?? 'ok';
@@ -114,6 +115,14 @@ test('login timeout is reported without uploading or publishing', async () => {
   assert.equal(result.code, 2);
   assert.equal(result.uploads, 0);
   assert.equal(result.clicks, 0);
+});
+
+test('leaves an existing unpublished video untouched', async () => {
+  const result = await simulate({ existingDraft: true });
+  assert.equal(result.code, 1);
+  assert.equal(result.uploads, 0);
+  assert.equal(result.clicks, 0);
+  assert.ok(result.logs.some((line) => line.includes('EXISTING_DRAFT')));
 });
 
 test('refuses an altered title or missing description and tags', async () => {
