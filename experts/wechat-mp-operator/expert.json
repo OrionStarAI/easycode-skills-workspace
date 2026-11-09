@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "wechat-mp-operator",
+  "version": "1.0.0",
+  "promptProfile": "general",
+  "category": "creative",
+  "icon": "edit",
+  "name": {
+    "zh": "微信公众号运营专家",
+    "en": "WeChat Official Account Operator"
+  },
+  "description": {
+    "zh": "帮助公众号运营者选题、写稿、准备草稿，并基于自己账号的数据复盘。",
+    "en": "Plan and write WeChat articles, prepare drafts, and review results using your account's data."
+  },
+  "skills": ["mp-weixin-ops", "wechat-official-account"],
+  "tags": [
+    { "zh": "公众号", "en": "WeChat" },
+    { "zh": "内容运营", "en": "Content operations" },
+    { "zh": "数据复盘", "en": "Analytics" }
+  ]
+}
