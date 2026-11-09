@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "forge-prd-entity",
+    "displayName": {
+      "zh": "需求梳理与 PRD 锻造",
+      "en": "Requirements and PRD Forge"
+    },
+    "version": "2.0.0",
+    "usageExample": "帮我梳理内部客户管理系统的需求，明确业务对象、状态和角色权限，再整理成可供开发的 PRD。",
+    "description": {
+      "zh": "围绕 B 端业务对象、字段、状态和角色权限，分阶段完成需求梳理、文字 PRD 和图文 PRD。图文交付需要对应的截图或文档工具。",
+      "en": "Develop B2B requirements, a written PRD, and an illustrated PRD in stages, based on business objects, fields, states, and permissions. Illustrated delivery requires the relevant screenshot or document tools."
+    }
+  },
+  "storage": {
+    "packageKey": "skills/forge-prd-entity/forge-prd-entity_2.0.0.zip"
+  },
+  "media": {
+    "examples": []
+  }
+}
