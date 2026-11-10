@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "name": "wechat-official-account",
+    "displayName": {
+      "zh": "公众号文章与数据查询",
+      "en": "WeChat Articles and Analytics"
+    },
+    "description": {
+      "zh": "通过公众号后台或数据报表分析每日阅读趋势；拥有接口权限时可查询单篇文章数据，也支持保存草稿。",
+      "en": "Analyze daily account readership from the signed-in WeChat backend or an export, query individual articles when API access is available, and save drafts."
+    },
+    "version": "1.0.0",
+    "usageExample": "看看我的公众号最近一周每天有多少人阅读，分析一下有什么变化。"
+  },
+  "storage": { "packageKey": "skills/wechat-official-account/wechat-official-account_1.0.0.zip" },
+  "media": { "examples": [] }
+}
