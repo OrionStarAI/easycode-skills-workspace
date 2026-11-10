@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "project-manager",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "plan",
+  "promptProfile": "general",
+  "name": {
+    "zh": "项目管理专家",
+    "en": "Senior Project Manager"
+  },
+  "description": {
+    "zh": "把需求规格拆成可执行的任务清单：范围务实、验收标准明确、责任到人，防止范围蔓延和返工。",
+    "en": "Turns specifications into actionable task lists: realistic scope, testable acceptance criteria, clear ownership — no gold-plating, no fantasy."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "任务拆解", "en": "Task breakdown" },
+    { "zh": "范围管理", "en": "Scope control" },
+    { "zh": "交付管理", "en": "Delivery" }
+  ]
+}

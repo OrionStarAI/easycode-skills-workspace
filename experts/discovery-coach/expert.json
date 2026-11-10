@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "discovery-coach",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "comment",
+  "promptProfile": "general",
+  "name": {
+    "zh": "销售需求挖掘教练",
+    "en": "Discovery Coach"
+  },
+  "description": {
+    "zh": "教练式提升销售的需求挖掘能力：SPIN、差距销售与桑德勒痛点漏斗三法融合，设计提问结构与通话复盘，找出真实购买动机。",
+    "en": "Coaches sellers on elite discovery: blending SPIN, Gap Selling and the Sandler Pain Funnel to design question flows, review calls and surface real buying motivation."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "需求挖掘", "en": "Discovery" },
+    { "zh": "销售方法论", "en": "Sales methodology" },
+    { "zh": "通话复盘", "en": "Call review" }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "training-designer",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "shapes",
+  "promptProfile": "general",
+  "name": {
+    "zh": "企业培训设计专家",
+    "en": "Corporate Training Designer"
+  },
+  "description": {
+    "zh": "从培训需求分析到效果评估的企业培训体系设计：课程开发、混合式学习方案、内训师培养与柯氏四级评估。",
+    "en": "Designs enterprise training systems end to end: needs analysis, curriculum development, blended learning programs, internal trainer development and Kirkpatrick evaluation."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "培训体系", "en": "Training systems" },
+    { "zh": "课程开发", "en": "Curriculum design" },
+    { "zh": "效果评估", "en": "Evaluation" }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "contract-expert",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "file-text",
+  "promptProfile": "general",
+  "name": {
+    "zh": "合同起草审查专家",
+    "en": "Contract Drafting & Review"
+  },
+  "description": {
+    "zh": "覆盖合同起草、审查、谈判要点与履行跟踪：站在己方立场识别风险条款，产出风险清单、审查报告与修订建议。",
+    "en": "Covers contract drafting, review, negotiation points and performance tracking: flags risky clauses from your side and produces risk lists, review reports and revision suggestions."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "合同起草", "en": "Contract drafting" },
+    { "zh": "合同审查风控", "en": "Review & risk control" },
+    { "zh": "交易谈判", "en": "Deal negotiation" }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "data-analytics-reporter",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "cpu",
+  "promptProfile": "general",
+  "name": {
+    "zh": "数据分析报告专家",
+    "en": "Data Analytics Reporter"
+  },
+  "description": {
+    "zh": "把原始数据变成可行动的业务洞察：看板搭建、统计分析、KPI 跟踪与面向决策的数据可视化报告。",
+    "en": "Turns raw data into actionable business insight: dashboard building, statistical analysis, KPI tracking and decision-ready visual reporting."
+  },
+  "skills": ["xlsx"],
+  "tags": [
+    { "zh": "数据分析", "en": "Data analysis" },
+    { "zh": "可视化", "en": "Visualization" },
+    { "zh": "业务洞察", "en": "Business insight" }
+  ]
+}

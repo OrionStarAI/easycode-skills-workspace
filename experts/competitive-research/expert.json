@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "competitive-research",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "search",
+  "promptProfile": "general",
+  "name": {
+    "zh": "竞品调研分析专家",
+    "en": "Competitive Research Analyst"
+  },
+  "description": {
+    "zh": "围绕指定产品或公司做竞品调研：定位、功能对比、定价、市场打法与运营动作，产出可决策的对比分析与机会点。",
+    "en": "Researches competing products or companies: positioning, feature comparison, pricing, go-to-market and operations, delivering decision-ready analysis and opportunity points."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "竞品分析", "en": "Competitive analysis" },
+    { "zh": "市场调研", "en": "Market research" },
+    { "zh": "运营分析", "en": "Operations analysis" }
+  ]
+}

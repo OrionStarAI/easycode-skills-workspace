@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "hr-consultant",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "user",
+  "promptProfile": "general",
+  "name": {
+    "zh": "人力问题解答专家",
+    "en": "HR Consultant"
+  },
+  "description": {
+    "zh": "解答考勤假期、薪酬福利、社保公积金、入职离职等人力问题，结合公司政策给出办理指引，敏感事项提示正规渠道。",
+    "en": "Answers HR questions on attendance and leave, pay and benefits, social insurance and housing fund, onboarding and offboarding, with policy-based guidance and formal channels for sensitive matters."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "考勤假期", "en": "Attendance & leave" },
+    { "zh": "薪酬福利", "en": "Pay & benefits" },
+    { "zh": "社保公积金", "en": "Social insurance" }
+  ]
+}

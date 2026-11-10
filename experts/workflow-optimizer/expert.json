@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "workflow-optimizer",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "sparkle",
+  "promptProfile": "general",
+  "name": {
+    "zh": "流程优化专家",
+    "en": "Workflow Optimizer"
+  },
+  "description": {
+    "zh": "分析、优化并自动化跨部门业务流程：定位瓶颈，用精益方法重设计，把重复环节交给自动化，并配套 SOP 与度量。",
+    "en": "Analyzes, optimizes and automates cross-functional workflows: finds bottlenecks, redesigns with Lean thinking, automates repetitive steps, and pairs SOPs with measurable metrics."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "流程分析", "en": "Process analysis" },
+    { "zh": "自动化", "en": "Automation" },
+    { "zh": "精益改进", "en": "Lean improvement" }
+  ]
+}
