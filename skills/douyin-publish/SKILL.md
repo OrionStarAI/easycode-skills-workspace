@@ -1,5 +1,6 @@
 ---
 name: douyin-publish
+version: 1.1.0
 description: 通过 ego lite 浏览器（ego-browser）自动发布视频到抖音：上传文件、填标题/描述/话题、等待内容检测、点击发布并核实结果。当用户要发抖音/上传抖音视频/用 egolite 操作抖音时使用。前置：ego lite 已运行；未登录时脚本会截图二维码并引导扫码。
 ---
 
@@ -44,7 +45,7 @@ EOF
 ~/.easycode-user/skills/douyin-publish/scripts/douyin_publish.sh --params /tmp/douyin_params.json
 ```
 
-成功标志：`PUBLISH_SUCCESS`（页面出现"发布成功"）或 `PUBLISH_REDIRECT_OK`（已跳转作品管理页）。之后可到 ego lite 的作品管理页人工核实。
+成功标志：`PUBLISH_SUCCESS`（页面给出明确成功信号）。如果只跳转或状态检查中断，返回 `PUBLISH_UNCONFIRMED`；先到作品管理页核对，不能自动重试以免重复发布。
 
 ### 2. 演练（不点发布，但会真实注入文件到表单）
 
@@ -52,7 +53,7 @@ EOF
 ~/.easycode-user/skills/douyin-publish/scripts/douyin_publish.sh --params /tmp/douyin_params.json --dry-run
 ```
 
-输出 `DRYRUN_OK` 表示发布按钮可用、内容检测通过。
+输出 `DRYRUN_OK` 表示上传和文案校验完成、发布按钮可用，且页面没有显示检测中；这不代表封面、发布设置或平台审核已通过。若出现 `COVER_REVIEW_REQUIRED`，请在页面检查封面提示。
 
 ### 3. 发布前与用户确认发布信息
 
@@ -67,16 +68,20 @@ EOF
 | desc | 可选 | 描述文案 |
 | tags | 可选 | 字符串数组，自动加 `#` |
 
-退出码：0 成功；1 失败；2 未登录/扫码超时。
+退出码：0 已确认成功（演练仅表示已实现的上传与文案检查通过）；1 发布前失败；2 未登录/扫码超时；3 点击后的发布结果未确认。只返回码 3 时先核对作品管理，不能重复提交。
 
 ## 实现要点（改脚本前必读）
 
 - **标题是 React 受控 input**：用 `HTMLInputElement.prototype.value` 原生 setter + 派发 `input` 事件，直接赋值不生效
-- **描述是 contenteditable 富文本**：focus 后 `document.execCommand('insertText')`
+- **描述是 contenteditable 富文本**：已填写相同内容时保留；有不同的已有内容时停止，不重复插入或覆盖。空编辑器用 `document.execCommand('insertText')`；回读时忽略编辑器生成的零宽占位字符。
 - **发布按钮精确匹配文本 `发布` 且 `!disabled`**：页面有"发布暂存离开"等相似按钮，勿模糊匹配
-- **必须等"检测中"消失再点发布**（平台内容安全检测，实测几秒~几十秒）
-- **任务空间所有权**：用户可能中途在 ego lite 接管过空间，脚本按 useOrCreateTaskSpace → takeOverTaskSpace → claimTaskSpace 降级获取
-- **成功核实双重**：跳转 content/manage + 出现"发布成功"
+- **上传完成后才能发布**：等待远端视频预览或“重新上传”控件，并确认没有可见进度条与“上传失败”。等待超时就停止，不猜测成功。
+- **必须等"检测中"消失再点发布**；检测超时就停止，不继续点击。
+- **回读标题和简介**：两者与请求不一致或页面有错误提示时停止；确认账号是用户要求的账号。
+- **保护未发布内容**：页面提示“你还有上次未发布的视频”时停止上传，说明情况并让用户决定如何处理；不要自动点“放弃”或覆盖原稿。
+- **任务空间所有权**：空间不可用或已由用户接管时停止，不自动夺回控制权；先请用户在 ego lite 中处理。
+- **成功核实双重**：跳转 content/manage + 出现"发布成功"。点击后状态未知时不要自动重试。
+- 当前脚本没有自定义封面或定时发布参数；需要自定义封面时请用户在创作者页面完成，不能声称脚本已设置。
 - wrapper 里 sed 的匹配锚点是 JS 源码中的 `const PARAMS_FILE = ` 与 `const argv = process.argv.slice(2)` 两行，改 JS 时别动这两行写法
 
 ## 故障排查
@@ -84,5 +89,6 @@ EOF
 - `ego-browser: command not found` → 运行 ego lite 一次；或看 ego lite 内置技能 ego-browser 的 references/install.md
 - 卡 NOT_LOGGED_IN → 确认 ego lite 窗口显示抖音登录页；扫码后手机若要短信验证按提示完成
 - `file input not found` → 上传页未加载完，重跑
+- 上传期间遇到权限弹窗等中断时，先检查现有表单和视频状态，不要盲目重新上传或覆盖已有内容。
 - `PUBLISH_UNCONFIRMED` → 去 ego lite 看页面，可能弹人工验证
 - 首次登录等扫码可能跑 3 分钟，建议 run_in_background

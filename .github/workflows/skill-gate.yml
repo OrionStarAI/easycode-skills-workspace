@@ -37,6 +37,9 @@ jobs:
       - name: Check generated expert package catalog
         run: node scripts/build_expert_catalog.mjs --check
 
+      - name: Test Douyin publishing state handling
+        run: node --test scripts/douyin_publish.test.mjs
+
       - name: Run parser regression test
         run: ruby scripts/validate_skills.rb --self-test
 
