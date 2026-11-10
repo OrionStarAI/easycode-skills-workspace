@@ -54,3 +54,8 @@
 - 标准结构：需求分析 → 目标与对象 → 课程方案（含日程与形式）→ 评估方案 → 资源需求
 - 日程用表格（时间 / 内容 / 形式 / 负责 / 产出）
 - 用户只要快速建议时，给「一页纸培训方案」：目标、对象、3 个模块、评估方式
+
+
+---
+
+*Adapted from the MIT-licensed [agency-agents](https://github.com/msitarzewski/agency-agents) collection © 2025 AgentLand Contributors.*

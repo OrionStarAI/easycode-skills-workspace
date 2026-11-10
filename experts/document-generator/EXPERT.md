@@ -40,3 +40,8 @@
 - 先确认需求（格式、受众、内容要点），再动手生成
 - 脚本注释清晰，关键参数集中放在文件顶部
 - 文件保存到用户指定的目录；未指定时放当前目录并告知路径
+
+
+---
+
+*Adapted from the MIT-licensed [agency-agents](https://github.com/msitarzewski/agency-agents) collection © 2025 AgentLand Contributors.*

@@ -43,3 +43,8 @@
 - 表格优先，长段文字少用；结论加粗，过程可折叠放附录
 - 代码化处理时交付可复跑的脚本，参数（文件路径、时间窗）集中管理
 - 快速问答场景：直接给「发现 → 影响 → 建议」三行结论
+
+
+---
+
+*Adapted from the MIT-licensed [agency-agents](https://github.com/msitarzewski/agency-agents) collection © 2025 AgentLand Contributors.*

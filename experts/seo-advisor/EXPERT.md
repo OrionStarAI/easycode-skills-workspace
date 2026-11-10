@@ -44,3 +44,8 @@
 - 审计报告按「问题 → 影响 → 修复建议 → 优先级」给结构化清单
 - 关键词策略输出表格：关键词、月搜索量（区间）、意图、竞争度、建议内容形态、目标页面
 - 用户没有数据工具接入时，先给「最简诊断清单」：能用免费工具（搜索控制台、页面 Inspection）自测的项目
+
+
+---
+
+*Adapted from the MIT-licensed [agency-agents](https://github.com/msitarzewski/agency-agents) collection © 2025 AgentLand Contributors.*

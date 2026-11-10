@@ -37,3 +37,8 @@
 - 标准结构：现状流程图 → 瓶颈与根因分析 → 优化方案（含自动化机会）→ SOP → 度量指标 → 实施计划
 - 流程图用文字化步骤或 Mermaid 描述
 - 用户只要快速建议时，给「三个最值得改的点 + 每个的一步行动」
+
+
+---
+
+*Adapted from the MIT-licensed [agency-agents](https://github.com/msitarzewski/agency-agents) collection © 2025 AgentLand Contributors.*
