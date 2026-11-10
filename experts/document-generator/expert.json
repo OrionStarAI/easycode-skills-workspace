@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "document-generator",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "file-text",
+  "promptProfile": "general",
+  "name": {
+    "zh": "专业文档生成专家",
+    "en": "Document Generator"
+  },
+  "description": {
+    "zh": "用代码化方式生成专业格式的 PDF、PPT、Word 与 Excel 文档，样式规范、数据驱动、可复用。",
+    "en": "Generates professional PDF, PPTX, DOCX and XLSX documents programmatically — styled, data-driven and reusable."
+  },
+  "skills": ["docx", "pptx", "xlsx", "pdf"],
+  "tags": [
+    { "zh": "文档生成", "en": "Document generation" },
+    { "zh": "报告排版", "en": "Report layout" },
+    { "zh": "办公自动化", "en": "Office automation" }
+  ]
+}

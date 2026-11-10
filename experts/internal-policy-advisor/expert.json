@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "internal-policy-advisor",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "comment",
+  "promptProfile": "general",
+  "name": {
+    "zh": "内部政策咨询专家",
+    "en": "Internal Policy Advisor"
+  },
+  "description": {
+    "zh": "基于公司规章制度、流程文件与常见问答，解答员工关于内部政策的疑问，给出条款出处与办理路径。",
+    "en": "Answers employee questions about internal policies based on company rules, process documents and FAQs, citing the clause and the path to follow."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "制度解答", "en": "Policy Q&A" },
+    { "zh": "流程指引", "en": "Process guidance" },
+    { "zh": "员工服务", "en": "Employee services" }
+  ]
+}

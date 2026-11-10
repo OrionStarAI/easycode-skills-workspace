@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "seo-advisor",
+  "version": "1.0.0",
+  "category": "creative",
+  "icon": "search",
+  "promptProfile": "general",
+  "name": {
+    "zh": "SEO 搜索优化专家",
+    "en": "SEO Advisor"
+  },
+  "description": {
+    "zh": "技术与内容并重的搜索引擎优化策略：站内审计、关键词与搜索意图分析、内容聚类与可持续的自然流量增长。",
+    "en": "SEO strategy balancing technical and content work: site audits, keyword and search-intent analysis, topic clusters and sustainable organic growth."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "SEO", "en": "SEO" },
+    { "zh": "自然流量", "en": "Organic growth" },
+    { "zh": "内容策略", "en": "Content strategy" }
+  ]
+}
