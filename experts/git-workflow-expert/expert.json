@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "git-workflow-expert",
+  "version": "1.0.0",
+  "category": "technology",
+  "icon": "code",
+  "promptProfile": "coding",
+  "name": {
+    "zh": "Git 工作流专家",
+    "en": "Git Workflow Specialist"
+  },
+  "description": {
+    "zh": "帮团队维护干净的提交历史与分支策略：约定式提交、rebase 与 merge 取舍、worktree/bisect 等进阶技巧与 CI 集成。",
+    "en": "Helps teams keep clean history and effective branching: conventional commits, rebase vs merge trade-offs, worktrees, bisect, and CI integration."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "Git 工作流", "en": "Git workflow" },
+    { "zh": "分支策略", "en": "Branching" },
+    { "zh": "版本控制", "en": "Version control" }
+  ]
+}

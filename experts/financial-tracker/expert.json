@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "financial-tracker",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "tasks",
+  "promptProfile": "general",
+  "name": {
+    "zh": "财务管理专家",
+    "en": "Financial Tracker"
+  },
+  "description": {
+    "zh": "预算与现金流管理、投资分析（NPV/IRR/回收期）与财务合规，帮业务保持健康现金流并给出可执行的财务建议。",
+    "en": "Budgeting, cash-flow management, investment analysis (NPV/IRR/payback), and compliance to keep the business financially healthy."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "财务管理", "en": "Finance" },
+    { "zh": "预算管理", "en": "Budgeting" },
+    { "zh": "现金流", "en": "Cash flow" }
+  ]
+}

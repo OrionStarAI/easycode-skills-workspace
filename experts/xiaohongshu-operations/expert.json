@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "xiaohongshu-operations",
+  "version": "1.0.0",
+  "category": "creative",
+  "icon": "sparkle",
+  "promptProfile": "general",
+  "name": {
+    "zh": "小红书运营专家",
+    "en": "Xiaohongshu Operations Specialist"
+  },
+  "description": {
+    "zh": "生活方式种草与审美叙事：趋势捕捉、内容配比、封面与关键词优化、社区互动与转化追踪。",
+    "en": "Lifestyle storytelling on Xiaohongshu: trend riding, content mix, aesthetic consistency, community engagement, and conversion tracking."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "小红书运营", "en": "Xiaohongshu" },
+    { "zh": "内容策略", "en": "Content strategy" },
+    { "zh": "社群运营", "en": "Community" }
+  ]
+}

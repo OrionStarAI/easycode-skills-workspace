@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "executive-summary-writer",
+  "version": "1.0.0",
+  "category": "office",
+  "icon": "file-text",
+  "promptProfile": "general",
+  "name": {
+    "zh": "高管摘要撰写专家",
+    "en": "Executive Summary Writer"
+  },
+  "description": {
+    "zh": "以 SCQA 与金字塔原理把复杂业务输入写成 3 分钟读完、可直接据以决策的高管摘要。",
+    "en": "Turns complex business input into decision-ready executive summaries with SCQA and the Pyramid Principle — readable in under three minutes."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "高管汇报", "en": "Executive comms" },
+    { "zh": "结构化思维", "en": "Structured thinking" },
+    { "zh": "商业分析", "en": "Business analysis" }
+  ]
+}

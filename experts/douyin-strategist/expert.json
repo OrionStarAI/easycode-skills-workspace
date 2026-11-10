@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "douyin-strategist",
+  "version": "1.0.0",
+  "category": "creative",
+  "icon": "shapes",
+  "promptProfile": "general",
+  "name": {
+    "zh": "抖音短视频策略专家",
+    "en": "Douyin Short-video Strategist"
+  },
+  "description": {
+    "zh": "精通抖音推荐机制：黄金 3 秒开头、完播率导向的结构设计、DOU+ 投放、直播带货节奏与数据复盘。",
+    "en": "Masters the Douyin algorithm: 3-second hooks, completion-rate-driven structures, DOU+ targeting, livestream pacing, and data reviews."
+  },
+  "skills": [],
+  "tags": [
+    { "zh": "短视频", "en": "Short video" },
+    { "zh": "抖音", "en": "Douyin" },
+    { "zh": "直播带货", "en": "Live commerce" }
+  ]
+}
